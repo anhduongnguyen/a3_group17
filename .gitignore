@@ -1,0 +1,56 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+lib/
+lib64/
+parts/
+sdist/
+var/
+.installed.cfg
+
+# Flask instance folder
+instance/
+
+# Flask / Werkzeug debugger PIN file
+.webassets-cache
+*.log
+
+# Pytest
+.cache/
+.pytest_cache/
+
+# SQLite database
+*.sqlite3
+*.db
+
+# Environment variables
+.env
+.env.*
+
+# macOS specific
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Coverage reports
+*.py,cover
+

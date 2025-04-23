@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ChefUp | Event Detail</title>
+  <link rel="icon" type="image/x-icon" href="static/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="static/style/style.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg custom-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">
+        <img src="static/img/logo.png" alt="ChefUp Logo" class="logo-img" href="index.html" />
+        <span class="chefup-brand">ChefUp</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="create-event.html">Create Class</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="booking-history.html">My Events</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#">Log Out</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container detail-page">
+    <section class="container event-hero py-4">
+      <!-- Hero Image -->
+      <div class="event-hero-background"></div>
+      <div class="container position-relative z-1 text-center">
+        <img src="static/img/sushiclass.png" class="img-fluid rounded event-hero-image" alt="Event Cover" />
+      </div>
+    </section>
+
+    <div class="container my-4">
+      <div class="row">
+        <!-- Get Tickets box -->
+        <div class="col-lg-4 order-lg-2 order-1 mb-4">
+          <div class="ticket-box">
+            <p class="ticket-price">$170</p>
+            <a href="book-event.html" class="btn btn-ticket">Get tickets</a>
+          </div>
+        </div>
+
+        <!-- Event details -->
+        <div class="col-lg-8 order-lg-1 order-2">
+          <h1>Sushi Platter Making For Beginners</h1>
+          <div class="d-flex flex-wrap align-items-center mb-3">
+            <span class="bg-success rounded detail-badge me-2">Open</span>
+            <span class="bg-secondary rounded detail-badge">12 tickets left</span>
+          </div>
+          <div class="event-details">
+            <p><strong>Date:</strong> Wednesday, 23rd April 2025</p>
+            <p><strong>Time:</strong> 11:00 am - 1:30 pm</p>
+            <p><strong>Location:</strong> 58 Arnold St, Holland Park QLD</p>
+          </div>
+          <hr>
+          <div class="event-description">
+            <p>
+              Join our hands-on sushi making workshop designed especially for
+              beginners. In this fun and interactive class, you'll learn the
+              essential skills to craft your very own sushi platter from
+              scratch.
+            </p>
+            <p>What You'll Learn:</p>
+            <ul>
+              <li>How to prepare and season sushi rice</li>
+              <li>Knife skills and ingredient preparation</li>
+              <li>Rolling techniques for maki and Nigiri</li>
+              <li>Presentation tips for creating stunning sushi platters</li>
+            </ul>
+            <p>What's provided:</p>
+            <ul>
+              <li>All ingredients and cooking tools</li>
+              <li>Aprons and takeaway containers</li>
+              <li>Recipe cards to take home</li>
+            </ul>
+          </div>
+
+          <hr>
+          <h4 class="mt-5 mb-5">Comments</h4>
+
+          <div class="comment-box">
+            <textarea class="form-control comment-form" placeholder="Leave a comment..."></textarea>
+            <button class="btn btn-success float-end">Post</button>
+          </div>
+
+          <div class="comment-container">
+            <div class="comment-card">
+              <img src="static/img/profileuser.png" alt="User Profile Icon" class="profile-icon" />
+              <div>
+                <p class="mb-1">
+                  <strong>Maria</strong>
+                  <span class="small text-muted">- 11.04.2025</span>
+                </p>
+                <p>
+                  Sushi is my favourite food and I took this class just so I can
+                  learn how to make it whenever I want!
+                </p>
+              </div>
+            </div>
+
+            <div class="comment-card">
+              <img src="static/img/profileuser.png" alt="User Profile Icon" class="profile-icon" />
+              <div>
+                <p class="mb-1">
+                  <strong>Ellie</strong>
+                  <span class="small text-muted">- 11.04.2025</span>
+                </p>
+                <p>
+                  My Friend and I attended this class together and it was a lot fun. 100% would reccomend.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-auto custom-footer">
+    <div class="container">
+      <div class="row justify-content-between">
+        <div class="col-md-4 mb-4">
+          <h5>About Us</h5>
+          <p class="text-muted">
+            ChefUp connects cooking enthusiasts with hands-on workshops taught by passionate instructors. Learn, cook,
+            and share!
+          </p>
+          <div class="media-icons">
+            <span>
+              <img src="static/img/instagram.png" alt="Instagram Icon" class="media-icon">
+              <img src="static/img/facebook.png" alt="Facebook Icon" class="media-icon">
+              <img src="static/img/twitter.png" alt="Twitter Icon" class="media-icon">
+              <img src="static/img/linkedin.png" alt="LinkedIn Icon" class="media-icon">
+            </span>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled footer-list">
+            <li><a href="index.html" class="footer-link">Home</a></li>
+            <li><a href="create-event.html" class="footer-link">Create Class</a></li>
+            <li><a href="#" class="footer-link">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="mb-3 mt-2">
+    <div class="row">
+      <div class="col text-center">
+        <small class="text-muted">&copy; 2025 ChefUp. All rights reserved.</small>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
