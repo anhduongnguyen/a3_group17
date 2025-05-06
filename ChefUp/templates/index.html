@@ -1,706 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-  <meta charset="UTF-8">
-  <title>ChefUp | Home</title>
-  <link rel="icon" type="image/x-icon" href="static/img/logo.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="static/style/style.css">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
-    rel="stylesheet">
-</head>
+{% block content %}
+<main class="container index-page">
 
-<body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg custom-navbar">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">
-        <img src="static/img/logo.png" alt="ChefUp Logo" class="logo-img" href="index.html">
-        <span class="chefup-brand">ChefUp</span>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"> <a class="nav-link" href="create-event.html">Create Class</a></li>
-          <li class="nav-item"> <a class="nav-link" href="booking-history.html">My Events</a></li>
-          <li class="nav-item"> <a class="nav-link" href="#">Log Out</a></li>
-        </ul>
+  <!-- Hero Section -->
+  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="hero-banner hero-banner-1">
+          <div class="slogan-container">
+            <h1 class="display-4">Learn to cook, <br> one class at a time</h1>
+          </div>
+        </div>
       </div>
-    </div>
-  </nav>
-
-  <main class="container index-page">
-
-    <!-- Hero Section -->
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-    
-        <div class="carousel-item active">
-          <div class="hero-banner hero-banner-1">
-            <div class="slogan-container">
-              <h1 class="display-4">Learn to cook, <br> one class at a time</h1>
-            </div>
+      <div class="carousel-item">
+        <div class="hero-banner hero-banner-2">
+          <div class="slogan-container">
+            <h1 class="display-4">Discover new flavours <br> with ChefUp</h1>
           </div>
         </div>
-    
-        <div class="carousel-item">
-          <div class="hero-banner hero-banner-2">
-            <div class="slogan-container">
-              <h1 class="display-4">Discover new flavours <br> with ChefUp</h1>
-            </div>
-          </div>
-        </div>
-    
-        <div class="carousel-item">
-          <div class="hero-banner hero-banner-3">
-            <div class="slogan-container">
-              <h1 class="display-4">Master your skills <br> from top chefs</h1>
-            </div>
-          </div>
-        </div>
-  
       </div>
-    </div>
-
-    <!-- Cuisine Filter -->
-    <div class="container my-4">
-      <div class="row align-items-center">
-        <div class="col-auto">
-          <h4 class="mb-0">Browse By Cuisine:</h4>
-        </div>
-
-        <div class="col-auto">
-          <div class="dropdown">
-            <button class="btn btn-warning dropdown-toggle dropdown-button" type="button" data-bs-toggle="dropdown">
-              Choose Cuisine
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item">Italian</a></li>
-              <li><a class="dropdown-item">Japanese</a></li>
-              <li><a class="dropdown-item">Mexican</a></li>
-              <li><a class="dropdown-item">Korean</a></li>
-              <li><a class="dropdown-item">Vietnamese</a></li>
-              <li><a class="dropdown-item">Thai</a></li>
-              <li><a class="dropdown-item">Indian</a></li>
-              <li><a class="dropdown-item">Chinese</a></li>
-              <li><a class="dropdown-item">Other</a></li>
-            </ul>
+      <div class="carousel-item">
+        <div class="hero-banner hero-banner-3">
+          <div class="slogan-container">
+            <h1 class="display-4">Master your skills <br> from top chefs</h1>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-
-    <!-- Event cards -->
-    <div class="container mt-4 pb-5 card-container">
-      <!-- Row 1 -->
-      <div class="row g-4 mb-4">
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
+  <!-- Cuisine Filter -->
+  <div class="container my-4">
+    <div class="row align-items-center">
+      <div class="col-auto">
+        <h4 class="mb-0">Browse By Cuisine:</h4>
       </div>
-
-      <!-- Row 2 -->
-      <div class="row g-4 mb-3">
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Row 3 -->
-      <div class="row g-4 mb-3">
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Row 4 -->
-      <div class="row g-4 mb-3">
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Row 5 -->
-      <div class="row g-4 mb-3">
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3"> <a href="event-detail.html" class="text-decoration-none text-dark">
-            <div class="card">
-              <img src="static/img/sushiclass.png" class="event-photo-card" alt="Sushi Event">
-              <div class="card-body">
-                <h5 class="card-title">Sushi Platter Making for Beginners</h5>
-                <span class="badge bg-success card-badge">Open</span>
-                <span class="badge bg-info text-dark card-badge">Japanese</span>
-                <p class="card-text mt-3">
-                  <img src="static/img/calendaricon.png" alt="Calendar Icon" class="card-icon">
-                  Wed, 23 Apr 2025
-                </p>
-                <p class="card-text">
-                  <img src="static/img/clockicon.png" alt="Clock Icon" class="card-icon">
-                  11:00 am - 1:30 pm
-                </p>
-                <p class="card-text">
-                  <img src="static/img/pinicon.png" alt="Clock Icon" class="card-icon">
-                  58 Arnold St, Holland Park QLD
-                </p>
-                <p class="card-text">
-                  <img src="static/img/ticketicon.png" alt="Ticket Icon" class="card-icon">
-                  $170
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
-  </main>
-
-
-  <!-- Footer -->
-  <footer class="mt-auto custom-footer">
-    <div class="container">
-      <div class="row justify-content-between">
-        <div class="col-md-4 mb-4">
-          <h5>About Us</h5>
-          <p class="text-muted">
-            ChefUp connects cooking enthusiasts with hands-on workshops taught by passionate instructors. Learn, cook,
-            and share!
-          </p>
-          <div class="media-icons">
-            <span>
-              <img src="static/img/instagram.png" alt="Instagram Icon" class="media-icon">
-              <img src="static/img/facebook.png" alt="Facebook Icon" class="media-icon">
-              <img src="static/img/twitter.png" alt="Twitter Icon" class="media-icon">
-              <img src="static/img/linkedin.png" alt="LinkedIn Icon" class="media-icon">
-            </span>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <h5>Quick Links</h5>
-          <ul class="list-unstyled footer-list">
-            <li><a href="index.html" class="footer-link">Home</a></li>
-            <li><a href="create-event.html" class="footer-link">Create Class</a></li>
-            <li><a href="#" class="footer-link">Contact</a></li>
+      <div class="col-auto">
+        <div class="dropdown">
+          <button class="btn btn-warning dropdown-toggle dropdown-button" type="button" data-bs-toggle="dropdown">
+            Choose Cuisine
+          </button>
+          <ul class="dropdown-menu">
+            {% for cuisine in ['Italian', 'Japanese', 'Mexican', 'Korean', 'Vietnamese', 'Thai', 'Indian', 'Chinese', 'Other'] %}
+              <li><a class="dropdown-item">{{ cuisine }}</a></li>
+            {% endfor %}
           </ul>
         </div>
       </div>
     </div>
-    <hr class="mb-3 mt-2">
-    <div class="row">
-      <div class="col text-center">
-        <small class="text-muted">&copy; 2025 ChefUp. All rights reserved.</small>
+  </div>
+
+  <!-- Event cards -->
+  <div class="container mt-4 pb-5 card-container">
+    <div class="row g-4 mb-4">
+      {% for event in events %}
+      <div class="col-sm-6 col-md-4 col-lg-3">
+        <a href="{{ url_for('main.event_detail', event_id=event.id) }}" class="text-decoration-none text-dark">
+          <div class="card">
+            <img src="{{ url_for('static', filename=event.image_path) }}" class="event-photo-card" alt="{{ event.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ event.title }}</h5>
+              <span class="badge bg-success card-badge">{{ event.status }}</span>
+              <span class="badge bg-info text-dark card-badge">{{ event.cuisine }}</span>
+              <p class="card-text mt-3">
+                <img src="{{ url_for('static', filename='img/calendaricon.png') }}" alt="Calendar Icon" class="card-icon">
+                {{ event.date }}
+              </p>
+              <p class="card-text">
+                <img src="{{ url_for('static', filename='img/clockicon.png') }}" alt="Clock Icon" class="card-icon">
+                {{ event.time }}
+              </p>
+              <p class="card-text">
+                <img src="{{ url_for('static', filename='img/pinicon.png') }}" alt="Location Icon" class="card-icon">
+                {{ event.location }}
+              </p>
+              <p class="card-text">
+                <img src="{{ url_for('static', filename='img/ticketicon.png') }}" alt="Ticket Icon" class="card-icon">
+                ${{ event.price }}
+              </p>
+            </div>
+          </div>
+        </a>
       </div>
+      {% endfor %}
     </div>
-  </footer>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+</main>
+{% endblock %}

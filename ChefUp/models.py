@@ -2,9 +2,12 @@ from . import db
 from datetime import datetime
 from flask_login import UserMixin
 
-''' ORIGINAL CODE FROM TEMPLATE 
+'''
 class User(db.Model, UserMixin):
-    pass  # Placeholder for now
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(100), nullable=False)
+    surname = db.Column(db.String(100), nullable=False)
 
 class Event(db.Model):
     pass  # Placeholder for now
@@ -14,8 +17,9 @@ class Comment(db.Model):
 
 class Order(db.Model):
     pass  # Placeholder for now
-
 '''
+
+
 
 # Filler code at the moment as database isnt set up yet
     
@@ -47,4 +51,3 @@ class Order(db.Model):
     order_date = db.Column(db.DateTime, default=datetime)
 
     
-
