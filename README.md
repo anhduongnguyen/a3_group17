@@ -7,14 +7,14 @@ ChefUp is a flask-based web application
 
 This application uses:
 
-flask
-werkzeug
-bootstrap-flask
-email-validator
-flask-login
-flask-sqlalchemy
-flask-wtf
-flask-bcrypt
+- flask
+- werkzeug
+- bootstrap-flask
+- email-validator
+- flask-login
+- flask-sqlalchemy
+- flask-wtf
+- flask-bcrypt
 
 ## Setup instructions 
 
