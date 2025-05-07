@@ -1,7 +1,7 @@
-## IAB207 Assignment 3
+IAB207 Assignment 3 
 
 # ChefUp - Event Management System 
-## ChefUp is a flask-based web application 
+ChefUp is a flask-based web application 
 
 ## Project Setup
 
