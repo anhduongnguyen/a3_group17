@@ -41,7 +41,7 @@
     <!-- Hero Banner -->
     <div class="container position-relative text-center">
       <div class="container abstract-banner">
-        <img src="static/img/abstractbanner.png" alt="Decorative Image">
+        <img src="{{ url_for('static', filename='img/abstractbanner.png') }}" alt="Decorative Image">
       </div>
       <h1 class="abstract-title">Create New Class</h1>
     </div>
@@ -49,77 +49,66 @@
     <!-- Form -->
     <div class="bg-light shadow-sm py-5 px-4 create-event-form">
       <div class="row justify-content-center">
-        <div class="col-lg-6 col-md-8">
+        <div class="col-md-8 col-lg-6">
+          <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
 
-          <form>
-            <div class="">
+            <div class="mb-3">
               <label class="form-label"><strong>Event Name</strong></label>
-              <input type="text" class="form-control" placeholder="event name" required>
+              {{ form.event_name(class="form-control", placeholder="Event Name") }}
             </div>
 
             <div class="row">
-              <div class="col-md-4 ">
+              <div class="col-md-4 mb-3">
                 <label class="form-label"><strong>Event Date</strong></label>
-                <input type="date" class="form-control" required>
+                {{ form.event_date(class="form-control") }}
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-4 mb-3">
                 <label class="form-label"><strong>Start Time</strong></label>
-                <input type="time" class="form-control" required>
+                {{ form.start_time(class="form-control") }}
               </div>
 
-              <div class="col-md-4 ">
+              <div class="col-md-4 mb-3">
                 <label class="form-label"><strong>End Time</strong></label>
-                <input type="time" class="form-control" required>
+                {{ form.end_time(class="form-control") }}
               </div>
             </div>
 
             <div class="row">
-              <div class="col-md-6 ">
+              <div class="col-md-6 mb-3">
                 <label class="form-label"><strong>Cuisine Type</strong></label>
-                <select class="form-select form-control" required>
-                  <option selected disabled>select a cuisine</option>
-                  <option>Italian</option>
-                  <option>Japanese</option>
-                  <option>Italian</option>
-                  <option>Japanese</option>
-                  <option>Mexican</option>
-                  <option>Korean</option>
-                  <option>Vietnamese</option>
-                  <option>Thai</option>
-                  <option>Indian</option>
-                  <option>Chinese</option>
-                  <option>Other</option>
-                </select>
+                {{ form.cuisine_type(class="form-select form-control") }}
               </div>
 
-              <div class="col-md-6 ">
+              <div class="col-md-6 mb-3">
                 <label class="form-label"><strong>Number of Tickets</strong></label>
-                <input type="number" class="form-control text-center" value="1" min="1">
+                {{ form.tickets(class="form-control text-center") }}
               </div>
             </div>
 
-            <div class="">
+            <div class="mb-3">
               <label class="form-label"><strong>Location</strong></label>
-              <input type="text" class="form-control" placeholder="venue location" required>
+              {{ form.location(class="form-control", placeholder="Venue Location") }}
             </div>
 
-            <div class="">
+            <div class="mb-3">
               <label class="form-label"><strong>Description</strong></label>
-              <textarea class="form-control event-desc" rows="3" placeholder="Write a description" required></textarea>
+              {{ form.description(class="form-control event-desc", rows="3", placeholder="Write a description") }}
             </div>
 
-            <div class="">
+            <div class="mb-3">
               <label class="form-label"><strong>Image Upload</strong></label>
-              <input type="file" class="form-control">
+              {{ form.image(class="form-control") }}
             </div>
 
             <div class="d-flex justify-content-center">
-              <button type="submit" class="btn btn-success submit-button">Submit</button>
+              {{ form.submit(class="btn btn-success submit-button") }}
             </div>
           </form>
         </div>
       </div>
+    </div>
 
   </main>
 

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField
 from wtforms.validators import InputRequired, Length, Email, EqualTo
-
+from wtforms.fields import  DateField, TimeField, IntegerField, SelectField, FileField
 # creates the login information
 class LoginForm(FlaskForm):
     user_name=StringField("User Name", validators=[InputRequired('Enter user name')])
@@ -19,3 +19,21 @@ class RegisterForm(FlaskForm):
 
     # submit button
     submit = SubmitField("Register")
+
+
+
+# this is the form for creating a event
+class EventForm(FlaskForm):
+    event_name = StringField("Event Name", validators=[InputRequired(), Length(max=60)])
+    event_date = DateField("Event Date", validators=[InputRequired()], format='%Y-%m-%d')
+    start_time = TimeField("Start Time", validators=[InputRequired()])
+    end_time = TimeField("End Time", validators=[InputRequired()])
+    cuisine_type = SelectField("Cuisine Type", choices=[
+        ('Italian', 'Italian'), ('Japanese', 'Japanese'), ('Mexican', 'Mexican'),
+        ('Korean', 'Korean'), ('Vietnamese', 'Vietnamese'), ('Thai', 'Thai'),
+        ('Indian', 'Indian'), ('Chinese', 'Chinese'), ('Other', 'Other')], validators=[InputRequired()])
+    tickets = IntegerField("Number of Tickets", validators=[InputRequired()], default=1)
+    location = StringField("Location", validators=[InputRequired(), Length(max=200)])
+    description = TextAreaField("Description", validators=[InputRequired()])
+    image = FileField("Image Upload")
+    submit = SubmitField("Submit")
