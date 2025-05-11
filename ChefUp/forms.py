@@ -2,6 +2,12 @@ from flask_wtf import FlaskForm
 from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField
 from wtforms.validators import InputRequired, Length, Email, EqualTo
 from wtforms.fields import  DateField, TimeField, IntegerField, SelectField, FileField
+from flask_wtf.file import FileField, FileAllowed
+from wtforms import DecimalField, FloatField
+
+
+ALLOWED_FILE = {'PNG', 'JPG', 'JPEG', 'png', 'jpg', 'jpeg'}
+
 # creates the login information
 class LoginForm(FlaskForm):
     user_name=StringField("User Name", validators=[InputRequired('Enter user name')])
@@ -33,7 +39,9 @@ class EventForm(FlaskForm):
         ('Korean', 'Korean'), ('Vietnamese', 'Vietnamese'), ('Thai', 'Thai'),
         ('Indian', 'Indian'), ('Chinese', 'Chinese'), ('Other', 'Other')], validators=[InputRequired()])
     tickets = IntegerField("Number of Tickets", validators=[InputRequired()], default=1)
+    price = FloatField("Price (AUD)", validators=[InputRequired()])
     location = StringField("Location", validators=[InputRequired(), Length(max=200)])
     description = TextAreaField("Description", validators=[InputRequired()])
-    image = FileField("Image Upload")
+    image = FileField("Image Upload", validators=[
+        FileAllowed(ALLOWED_FILE, 'Only image files are allowed (jpg, png, jpeg)')])
     submit = SubmitField("Submit")
