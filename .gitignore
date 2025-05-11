@@ -54,3 +54,4 @@ instance/
 # Coverage reports
 *.py,cover
 
+ChefUp/static/uploaded_img/
