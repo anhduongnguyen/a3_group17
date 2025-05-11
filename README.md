@@ -41,17 +41,17 @@ create a new branch with name </branch/>
 go to branch with name </branch/> 
 
 
-## how to merge your branch to nain and push:
+## how to merge your branch to main and push:
 #### PS: the "</ />" are just for syntaxing do not add them when doing the steps
 #### Make sure you go into your branch first (steps 1 to 2)
 ### 1) git checkout </my branch name/> 
-### 2) git pull origin nain 
-#### (do this when you go into your branch to pull changes made in nain, it's good practice to do this even if nothing has changed as a double check) 
+### 2) git pull origin main 
+#### (do this when you go into your branch to pull changes made in main, it's good practice to do this even if nothing has changed as a double check) 
 ### After you're done coding in your branch: 
 ### 3) git add .
 ### 4) git commit -m "message" 
-### 5) git checkout nain (this takes you back to nain)
-### 6) git pull origin nain 
+### 5) git checkout main (this takes you back to main)
+### 6) git pull origin main 
 ### 7) git merge </my branch name/>
 ### 8) git push 
 
