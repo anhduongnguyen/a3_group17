@@ -67,3 +67,15 @@ class Comment(db.Model):
 
 
     
+class CreateEvent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)  
+    description = db.Column(db.Text, nullable=False)  
+    date = db.Column(db.Date, nullable=False)  
+    start_time = db.Column(db.Time, nullable=False)  
+    end_time = db.Column(db.Time, nullable=False)  
+    cuisine = db.Column(db.String(50), nullable=False)  
+    tickets = db.Column(db.Integer, nullable=False)  
+    location = db.Column(db.String(100), nullable=False) 
+    image = db.Column(db.String(200), nullable=True)  # for now need to figure out how to store images
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
