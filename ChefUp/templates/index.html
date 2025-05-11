@@ -58,7 +58,9 @@
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <a href="{{ url_for('main.event_detail', event_id=event.id) }}" class="text-decoration-none text-dark">
               <div class="card h-100">
-                <img src="{{ url_for('static', filename=event.image_path) }}" class="event-photo-card card-img-top" alt="{{ event.title }}">
+                <img src="{{ url_for('static', filename=event.image_filename) }}" 
+                class="event-photo-card card-img-top" alt="{{ event.title }}">
+                
                 <div class="card-body">
                   <h5 class="card-title">{{ event.title }}</h5>
                   {% if event.status %}
@@ -67,11 +69,11 @@
                   <span class="badge bg-info text-dark card-badge">{{ event.cuisine }}</span>
                   <p class="card-text mt-3">
                     <img src="{{ url_for('static', filename='img/calendaricon.png') }}" alt="Calendar Icon" class="card-icon">
-                    {{ event.date }}
+                    {{ event.formatted_date }}
                   </p>
                   <p class="card-text">
                     <img src="{{ url_for('static', filename='img/clockicon.png') }}" alt="Clock Icon" class="card-icon">
-                    {{ event.time }}
+                    {{ event.formatted_start }} to {{ event.formatted_end }}
                   </p>
                   <p class="card-text">
                     <img src="{{ url_for('static', filename='img/pinicon.png') }}" alt="Location Icon" class="card-icon">
