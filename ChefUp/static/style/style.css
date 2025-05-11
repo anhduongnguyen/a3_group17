@@ -362,14 +362,14 @@ footer small {
 }
 
 .booking-head{
-  padding-left: 5rem;
-  padding-right: 5rem;
+  padding-left: 6rem;
+  padding-right: 6rem;
 }
 
 .event-booking-img {
   width: 100%;
-  max-width: 31.25rem;
-  min-width: 15.62rem;
+  max-width: 27rem;
+  min-width: 20rem;
   height: auto;
   object-fit: fill;
   border-radius: 1rem;
