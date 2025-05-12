@@ -32,8 +32,12 @@ class RegisterForm(FlaskForm):
 # this is the form for creating a event
 class EventForm(FlaskForm):
     event_name = StringField("Event Name", validators=[InputRequired(), Length(max=60)])
-    event_date = DateField("Event Date",validators=[InputRequired()],ormat='%Y-%m-%d',
-    render_kw={"min": date.today().strftime('%Y-%m-%d')} )
+    event_date = DateField(
+        "Event Date",
+        validators=[InputRequired()],
+        format='%Y-%m-%d',
+        render_kw={"min": date.today().strftime('%Y-%m-%d')}
+    )
     start_time = TimeField("Start Time", validators=[InputRequired()])
     end_time = TimeField("End Time", validators=[InputRequired()])
     cuisine_type = SelectField("Cuisine Type", choices=[
