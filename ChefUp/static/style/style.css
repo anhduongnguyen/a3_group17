@@ -441,3 +441,8 @@ footer small {
 .event-desc {
   height: 7.5rem;
 }
+
+.auth-form {
+  max-width: 30rem;
+  margin: 2rem auto;
+}

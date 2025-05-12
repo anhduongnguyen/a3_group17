@@ -11,20 +11,32 @@ ALLOWED_FILE = {'PNG', 'JPG', 'JPEG', 'png', 'jpg', 'jpeg'}
 
 # creates the login information
 class LoginForm(FlaskForm):
-    user_name=StringField("User Name", validators=[InputRequired('Enter user name')])
+    email=StringField("Email Address", validators=[InputRequired('Enter email address')])
     password=PasswordField("Password", validators=[InputRequired('Enter user password')])
     submit = SubmitField("Login")
 
  # this is the registration form
 class RegisterForm(FlaskForm):
-    user_name=StringField("User Name", validators=[InputRequired()])
-    email = StringField("Email Address", validators=[Email("Please enter a valid email")])
-    # linking two fields - password should be equal to data entered in confirm
-    password=PasswordField("Password", validators=[InputRequired(),
-                  EqualTo('confirm', message="Passwords should match")])
-    confirm = PasswordField("Confirm Password")
+    first_name = StringField("First Name", validators=[InputRequired()])
+    surname = StringField("Surname", validators=[InputRequired()])
+    email = StringField("Email Address", validators=[
+        InputRequired(), 
+        Email("Please enter a valid email")
+    ])
+    contact_number = StringField("Contact Number", validators=[
+        InputRequired(), 
+        Length(min=10, max=20, message="Enter a valid contact number")
+    ])
+    address = StringField("Address", validators=[
+        InputRequired(), 
+        Length(max=200)
+    ])
+    password = PasswordField("Password", validators=[
+        InputRequired(),
+        EqualTo('confirm', message="Passwords should match")
+    ])
+    confirm = PasswordField("Confirm Password", validators=[InputRequired()])
 
-    # submit button
     submit = SubmitField("Register")
 
 

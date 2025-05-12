@@ -11,7 +11,6 @@ from datetime import date
 main_bp = Blueprint('main', __name__)
 
 
-
 @main_bp.route('/')
 def index():
     events = Event.query.order_by(Event.date).all()
@@ -52,6 +51,7 @@ def create_event():
         db.session.commit()
         flash("Event created successfully!", "success")
         return redirect(url_for('main.index'))
+    
 
     return render_template('create-event.html', form=form, current_date=date.today().strftime('%Y-%m-%d'))
 
