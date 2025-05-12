@@ -4,6 +4,7 @@ from wtforms.validators import InputRequired, Length, Email, EqualTo
 from wtforms.fields import  DateField, TimeField, IntegerField, SelectField, FileField
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import DecimalField, FloatField
+from datetime import date
 
 
 ALLOWED_FILE = {'PNG', 'JPG', 'JPEG', 'png', 'jpg', 'jpeg'}
@@ -31,7 +32,8 @@ class RegisterForm(FlaskForm):
 # this is the form for creating a event
 class EventForm(FlaskForm):
     event_name = StringField("Event Name", validators=[InputRequired(), Length(max=60)])
-    event_date = DateField("Event Date", validators=[InputRequired()], format='%Y-%m-%d')
+    event_date = DateField("Event Date",validators=[InputRequired()],ormat='%Y-%m-%d',
+    render_kw={"min": date.today().strftime('%Y-%m-%d')} )
     start_time = TimeField("Start Time", validators=[InputRequired()])
     end_time = TimeField("End Time", validators=[InputRequired()])
     cuisine_type = SelectField("Cuisine Type", choices=[
