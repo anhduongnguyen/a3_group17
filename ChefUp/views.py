@@ -81,6 +81,14 @@ def check_upload_file(form):
     file.save(upload_path)
     return f'uploaded_img/{filename}'
 
+@main_bp.app_errorhandler(404)
+def page_not_found(error):
+    return render_template('error.html', message="Page not found 404"), 404
+
+@main_bp.app_errorhandler(500)
+def internal_server_error(error):
+    return render_template('error.html', message="500 - Internal Server Error"), 500
+
 '''
 @main_bp.route('/event-detail/<int:event_id>')
 def event_detail(event_id):
