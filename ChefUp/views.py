@@ -25,6 +25,7 @@ def index():
             event.formatted_date = event.date
     return render_template('index.html', events=events)
 
+
 ## will need to move event related stuff to its own file to be neater
 @main_bp.route('/create-event', methods=['GET', 'POST'])
 def create_event():
@@ -83,11 +84,13 @@ def check_upload_file(form):
 
 @main_bp.app_errorhandler(404)
 def page_not_found(error):
-    return render_template('error.html', message="Page not found 404"), 404
+    return render_template('error.html', error_code="404 - Page Not Found", 
+                           message="The link you followed is broken or the page has been removed."), 404
 
 @main_bp.app_errorhandler(500)
 def internal_server_error(error):
-    return render_template('error.html', message="500 - Internal Server Error"), 500
+    return render_template('error.html', error_code="500 - Internal Server Error", 
+                           message="Something went wrong on our end. Please try again later."), 500
 
 '''
 @main_bp.route('/event-detail/<int:event_id>')

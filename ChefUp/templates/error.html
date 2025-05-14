@@ -3,7 +3,8 @@
 
 {% block content %}
 <div class="container text-center py-5">
-  <h1>{{ message or "An error occurred." }}</h1>
+  <h1>{{ error_code }}</h1>
+  <h3>{{ message }}</h3>
   <a href="{{ url_for('main.index') }}" class="btn btn-primary mt-4">Back to Home</a>
 </div>
 {% endblock %}
