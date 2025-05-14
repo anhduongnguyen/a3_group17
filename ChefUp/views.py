@@ -40,6 +40,7 @@ def create_event():
             date=form.event_date.data,
             start_time=form.start_time.data.strftime('%H:%M'),
             end_time=form.end_time.data.strftime('%H:%M'),
+            cuisine=form.cuisine.data,
             location=form.location.data,
             price=form.price.data,
             capacity=form.tickets.data,

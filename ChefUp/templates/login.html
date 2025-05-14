@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from "bootstrap5/form.html" import render_form %}
+{% block content %}
+
+<div class="container bg-light shadow-sm p-4 mt-5 register-form">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8">
+        <h2 class="text-center mb-4 pb-3">Login</h2>
+
+        <form method="POST" action="{{ url_for('auth.login') }}">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            <label class="form-label"><strong>Email Adress</strong></label>
+            {{ form.email(class="form-control", placeholder="email") }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label"><strong>Password</strong></label>
+            {{ form.password(class="form-control", placeholder="password") }}
+        </div>
+
+        <div class="mb-3 pb-3 pt-3 text-center">
+            <button type="submit" class="btn btn-success w-50">Login</button>
+        </div>
+        </form>
+
+        <div class="text-center mt-3">
+        <p>New user? <a href="{{ url_for('auth.register') }}">Click here</a> to register.</p>
+        </div>
+  </div>
+  </div>
+</div>
+
+{% endblock %}

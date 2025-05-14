@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "bootstrap5/form.html" import render_form %}
+{% block content %}
+
+<div class="container bg-light shadow-sm p-4 mt-5 register-form">
+  <div class="row justify-content-center">
+    <div class="col-md-12 col-lg-10">
+      <h2 class="text-center mb-4 pb-3">Register</h2>
+
+    <form method="POST" action="{{ url_for('auth.register') }}">
+      {{ form.hidden_tag() }}
+      
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label"><strong>First Name</strong></label>
+          {{ form.first_name(class="form-control", placeholder="First name") }}
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label"><strong>Surname</strong></label>
+          {{ form.surname(class="form-control", placeholder="Surname") }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label"><strong>Email Address</strong></label>
+          {{ form.email(class="form-control", placeholder="Email address") }}
+        </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label"><strong>Contact Number</strong></label>
+        {{ form.contact_number(class="form-control", placeholder="04") }}
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label"><strong>Street Address</strong></label>
+        {{ form.street_address(class="form-control", placeholder="Street address") }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><strong>Password</strong></label>
+        {{ form.password(class="form-control", placeholder="Set password") }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><strong>Confirm Password</strong></label>
+        {{ form.confirm(class="form-control", placeholder="Confirm password") }}
+      </div>
+
+      <div class="mb-3 pb-3 pt-3 text-center">
+        <button type="submit" class="btn btn-success w-50">Register</button>
+      </div>
+    </form>
+
+    <div class="text-center mt-3">
+      <p>Already have an account? <a href="{{ url_for('auth.login') }}">Click here</a> to login.</p>
+    </div>
+  </div>
+  </div>
+</div>
+
+{% endblock %}

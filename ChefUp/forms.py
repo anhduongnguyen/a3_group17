@@ -25,9 +25,9 @@ class RegisterForm(FlaskForm):
     ])
     contact_number = StringField("Contact Number", validators=[
         InputRequired(), 
-        Length(min=10, max=20, message="Enter a valid contact number")
+        Length(min=10, max=10, message="Enter a valid contact number")
     ])
-    address = StringField("Address", validators=[
+    street_address = StringField("Address", validators=[
         InputRequired(), 
         Length(max=200)
     ])
@@ -52,7 +52,7 @@ class EventForm(FlaskForm):
     )
     start_time = TimeField("Start Time", validators=[InputRequired()])
     end_time = TimeField("End Time", validators=[InputRequired()])
-    cuisine_type = SelectField("Cuisine Type", choices=[
+    cuisine = SelectField("Cuisine Type", choices=[
         ('Italian', 'Italian'), ('Japanese', 'Japanese'), ('Mexican', 'Mexican'),
         ('Korean', 'Korean'), ('Vietnamese', 'Vietnamese'), ('Thai', 'Thai'),
         ('Indian', 'Indian'), ('Chinese', 'Chinese'), ('Other', 'Other')], validators=[InputRequired()])

@@ -416,7 +416,7 @@ footer small {
 }
 
 .create-event-form {
-  max-width: 59.3rem;
+  max-width: 55.3rem;
   margin: 0 auto;
   margin-bottom: 2rem;
   margin-top: 1rem;
@@ -428,6 +428,12 @@ footer small {
   margin: 0 auto;
 }
 
+.register-form {
+  max-width: 43rem;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}
 
 .form-control {
   height: 2.62rem;

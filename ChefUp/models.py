@@ -24,6 +24,7 @@ class Event(db.Model):
     date = db.Column(db.Date, nullable=False)
     start_time = db.Column(db.String(20), nullable=False)
     end_time = db.Column(db.String(20), nullable=False)
+    cuisine = db.Column(db.String(50), nullable=False)
     location = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
     capacity = db.Column(db.Integer, nullable=False)

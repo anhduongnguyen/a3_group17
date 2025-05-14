@@ -24,6 +24,7 @@ def login():
             error = 'Incorrect password'
         if error is None:
             login_user(email)
+            flash('You logged in successfully', 'success')
             nextp = request.args.get('next') # this gives the url from where the login page was accessed
             print(nextp)
             if next is None or not nextp.startswith('/'):
@@ -31,7 +32,7 @@ def login():
             return redirect(nextp)
         else:
             flash(error)
-    return render_template('user.html', form=login_form, heading='Login')
+    return render_template('login.html', form=login_form)
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -58,4 +59,4 @@ def register():
             flash("Registration successful. You are now logged in.", "success")
             return redirect(url_for('main.index'))
 
-    return render_template('user.html', form=register_form, heading='Register')
+    return render_template('register.html', form=register_form)
