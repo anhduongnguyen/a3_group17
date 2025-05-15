@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import Blueprint, current_app, render_template, request, flash, redirect, url_for
+from flask import abort
 from .forms import EventForm
 from . import db
 import os
@@ -61,9 +62,12 @@ def create_event():
 def booking_history():
     return render_template('booking-history.html')
 
-@main_bp.route('/event-detail')
+@main_bp.route('/event/<int:event_id>')
 def event_detail(event_id):
-    return render_template('event-detail.html')
+    event = db.session.get(Event, event_id)
+    if event is None:
+        abort(404)
+    return render_template('event-detail.html', event=event)
 
 @main_bp.route('/error')
 def error():
