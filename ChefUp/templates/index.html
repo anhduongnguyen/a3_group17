@@ -68,20 +68,21 @@
                   {% endif %}
                   <span class="badge bg-info text-dark card-badge">{{ event.cuisine }}</span>
                   <p class="card-text mt-3">
-                    <img src="{{ url_for('static', filename='img/calendaricon.png') }}" alt="Calendar Icon" class="card-icon">
-                    {{ event.formatted_date }}
-                  </p>
-                  <p class="card-text">
-                    <img src="{{ url_for('static', filename='img/clockicon.png') }}" alt="Clock Icon" class="card-icon">
-                    {{ event.formatted_start }} - {{ event.formatted_end }}
-                  </p>
+                    <p class="card-text">
+                      <img src="{{ url_for('static', filename='img/calendaricon.png') }}" alt="Calendar Icon" class="card-icon">
+                      {{ event.formatted_date }}
+                    </p>
+                    <p class="card-text">
+                      <img src="{{ url_for('static', filename='img/clockicon.png') }}" alt="Clock Icon" class="card-icon">
+                      {{ event.formatted_start }} - {{ event.formatted_end }}
+                    </p>
                   <p class="card-text">
                     <img src="{{ url_for('static', filename='img/pinicon.png') }}" alt="Location Icon" class="card-icon">
                     {{ event.location }}
                   </p>
                   <p class="card-text">
                     <img src="{{ url_for('static', filename='img/ticketicon.png') }}" alt="Ticket Icon" class="card-icon">
-                    ${{ "%.2f" | format(event.price) }}
+                    {{ format_price(event.price) }}
                   </p>
                 </div>
               </div>

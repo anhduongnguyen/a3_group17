@@ -18,14 +18,12 @@ def login():
 
         user = db.session.scalar(db.select(User).where(User.email == email_input))
 
-        if user is None:
-            error = 'Incorrect email'
-        elif not check_password_hash(user.password, password):  # match against hashed password
-            error = 'Incorrect password'
+        if user is None or not check_password_hash(user.password, password):
+            error = 'Invalid email or password'
 
         if error is None:
             login_user(user)
-            flash('You logged in successfully.', 'success')
+            flash('You have logged in successfully.', 'success')
 
             nextp = request.args.get('next')
             if not nextp or not nextp.startswith('/'):

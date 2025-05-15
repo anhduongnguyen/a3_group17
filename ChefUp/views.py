@@ -7,6 +7,7 @@ import os
 from werkzeug.utils import secure_filename
 from .models import Event, Booking, Comment
 from datetime import date
+from .utils import format_info
 
 
 main_bp = Blueprint('main', __name__)
@@ -17,18 +18,9 @@ event_bp = Blueprint('events', __name__, url_prefix='/events')
 def index():
     events = Event.query.order_by(Event.date).all()
     for event in events:
-        try:
-            event.formatted_start = datetime.strptime(event.start_time, '%H:%M').strftime('%I:%M %p')
-            event.formatted_end = datetime.strptime(event.end_time, '%H:%M').strftime('%I:%M %p')
-            event.formatted_date = event.date.strftime('%d %b %Y') 
-        except Exception:
-            event.formatted_start = event.start_time
-            event.formatted_end = event.end_time
-            event.formatted_date = event.date
+        format_info(event)  
     return render_template('index.html', events=events)
 
-
-## will need to move event related stuff to its own file to be neater
 @event_bp.route('/create-event', methods=['GET', 'POST'])
 def create_event():
     test_user_id = 1
@@ -67,6 +59,9 @@ def event_detail(event_id):
     event = db.session.get(Event, event_id)
     if event is None:
         abort(404)
+    
+    format_info(event)  
+    
     return render_template('event-detail.html', event=event)
 
 @main_bp.route('/error')

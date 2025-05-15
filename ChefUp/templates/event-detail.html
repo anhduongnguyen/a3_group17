@@ -16,7 +16,7 @@
     <!-- Ticket Box -->
     <div class="col-lg-4 order-lg-2 order-1 mb-4">
       <div class="ticket-box">
-        <p class="ticket-price"> ${{ "%.2f" | format(event.price) }}</p>
+        <p class="ticket-price"> {{ format_price(event.price) }}</p>
         <a href="{{ url_for('main.book_event', event_id=event.id) }}" class="btn btn-ticket">Get tickets</a>
       </div>
     </div>
@@ -29,8 +29,8 @@
         <span class="bg-secondary rounded detail-badge">{{ event.tickets_remaining() }} tickets left</span>
       </div>
       <div class="event-details">
-        <p><strong>Date:</strong> {{ event.date.strftime('%A, %d %B %Y') }}</p>
-        <p><strong>Time:</strong> {{ event.start_time }} - {{ event.end_time }}</p>
+        <p><strong>Date:</strong> {{ event.formatted_date }}</p>
+        <p><strong>Time:</strong> {{ event.formatted_start }} - {{ event.formatted_end }}</p>
         <p><strong>Location:</strong> {{ event.location }}</p>
         <p><strong>Cuisine:</strong> {{ event.cuisine }}</p>
       </div>
