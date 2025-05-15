@@ -1,11 +1,12 @@
 from datetime import datetime
 from flask import Blueprint, current_app, render_template, request, flash, redirect, url_for
 from flask import abort
+from flask_login import current_user, login_required
 from .forms import EventForm
 from . import db
 import os
 from werkzeug.utils import secure_filename
-from .models import Event, Booking, Comment
+from .models import Event, Booking, Comment, User
 from datetime import date
 from .utils import format_info
 
@@ -22,9 +23,10 @@ def index():
     return render_template('index.html', events=events)
 
 @event_bp.route('/create-event', methods=['GET', 'POST'])
+@login_required
 def create_event():
-    test_user_id = 1
     form = EventForm()
+    user_id = current_user.id
     if form.validate_on_submit(): 
         image_path = check_upload_file(form)
 
@@ -39,7 +41,7 @@ def create_event():
             price=form.price.data,
             capacity=form.tickets.data,
             image_filename=image_path,
-            user_id=test_user_id,
+            user_id=user_id,
             status='Open'
         )
         db.session.add(new_event)

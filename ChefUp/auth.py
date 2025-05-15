@@ -24,11 +24,7 @@ def login():
         if error is None:
             login_user(user)
             flash('You have logged in successfully.', 'success')
-
-            nextp = request.args.get('next')
-            if not nextp or not nextp.startswith('/'):
-                return redirect(url_for('main.index'))
-            return redirect(nextp)
+            return redirect(url_for('main.index'))
         else:
             flash(error, 'danger')
 

@@ -1,5 +1,4 @@
-# import flask - from 'package' import 'Class'
-from flask import Flask, render_template 
+from flask import Flask, render_template
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -8,62 +7,45 @@ import datetime
 
 db = SQLAlchemy()
 
-# create a function that creates a web application
-# a web server will run this web application
 def create_app():
-  
-    app = Flask(__name__)  # this is the name of the module/package that is calling this app
-    # Should be set to false in a production environment
+    app = Flask(__name__)
     app.debug = True
-    Bcrypt(app)
     app.secret_key = '8D2E19734841292FF3DC76283B6E5'
-    # set the app configuration data 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
-    # initialise db with flask app
+
     db.init_app(app)
-
+    Bcrypt(app)
     Bootstrap5(app)
-    
-    # initialise the login manager
-    login_manager = LoginManager()
-    
-    # set the name of the login function that lets user login
-    # in our case it is auth.login (blueprintname.viewfunction name)
-    login_manager.login_view = 'auth.login'
-    login_manager.init_app(app)
 
-    # create a user loader function takes userid and returns User
-    # Importing inside the create_app function avoids circular references
-    from .models import User
+    # Login manager setup
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.login'
+    login_manager.login_message = 'You need to be logged in to access this page.'
+    login_manager.login_message_category = 'warning'
+
+    from .models import User  # avoid duplicate
     @login_manager.user_loader
     def load_user(user_id):
-       return db.session.scalar(db.select(User).where(User.id==user_id))
+        return db.session.get(User, int(user_id))  # preferred over scalar+where
 
+    # Register blueprints
     from . import views
     app.register_blueprint(views.main_bp)
     app.register_blueprint(views.event_bp)
 
-
     from . import auth
     app.register_blueprint(auth.auth_bp)
-    
-    @app.errorhandler(404) 
-    # inbuilt function which takes error as parameter 
-    def not_found(e): 
-      return render_template("404.html", error=e)
-    
-    # this creates a dictionary of variables that are available
-    # to all html templates
+
+    # Context processors
     @app.context_processor
-    def get_year():
-      year = datetime.datetime.today().year
-      return dict(year=year)
+    def inject_year():
+        return dict(year=datetime.datetime.today().year)
 
     @app.context_processor
     def price_formatting():
-      def format_price(price):
-         return f"${price:.2f}"  
-      return dict(format_price=format_price)
-  
-    
+        def format_price(price):
+            return f"${price:.2f}"
+        return dict(format_price=format_price)
+
     return app

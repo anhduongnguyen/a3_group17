@@ -2,6 +2,12 @@
 {% from "bootstrap5/form.html" import render_form %}
 {% block content %}
 
+{% if current_user.is_authenticated %}
+  <div class="container mt-5">
+    <h1 class="text-center">You are already logged in!</h1>
+    <h3 class="text-center">Please log out to access the login page.</h3>
+  </div>
+  {% else %}
 <div class="container bg-light shadow-sm p-4 mt-5 register-form">
     <div class="row justify-content-center">
       <div class="col-md-10 col-lg-8">
@@ -28,6 +34,7 @@
         <div class="text-center mt-3">
         <p>New user? <a href="{{ url_for('auth.register') }}">Click here</a> to register.</p>
         </div>
+        {% endif %}
   </div>
   </div>
 </div>
