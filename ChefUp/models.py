@@ -1,5 +1,5 @@
 from . import db
-from datetime import datetime
+from datetime import datetime, timezone
 from flask_login import UserMixin
 
 # Tables outline
@@ -41,13 +41,15 @@ class Event(db.Model):
         booked = sum(booking.quantity for booking in self.bookings)
         return max(0, self.capacity - booked)
 
+    """
     def update_status(self):
-        if self.date < datetime.utcnow().date():
+        if self.date < datetime.now(timezone.utc).date():
             self.status = "Past"
         elif self.tickets_remaining() == 0:
             self.status = "Sold Out"
         else:
             self.status = "Open"
+    """
 
 class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)

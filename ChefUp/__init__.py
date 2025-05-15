@@ -38,6 +38,8 @@ def create_app():
 
     from . import views
     app.register_blueprint(views.main_bp)
+    app.register_blueprint(views.event_bp)
+
 
     from . import auth
     app.register_blueprint(auth.auth_bp)

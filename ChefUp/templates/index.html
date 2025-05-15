@@ -56,7 +56,7 @@
       <div class="row g-4 mb-4">
         {% for event in events %}
           <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <a href="{{ url_for('main.event_detail', event_id=event.id) }}" class="text-decoration-none text-dark">
+            <a href="{{ url_for('events.event_detail', event_id=event.id) }}" class="text-decoration-none text-dark">
               <div class="card h-100">
                 <img src="{{ url_for('static', filename=event.image_filename) }}" 
                 class="event-photo-card card-img-top" alt="{{ event.title }}">
@@ -73,7 +73,7 @@
                   </p>
                   <p class="card-text">
                     <img src="{{ url_for('static', filename='img/clockicon.png') }}" alt="Clock Icon" class="card-icon">
-                    {{ event.formatted_start }} to {{ event.formatted_end }}
+                    {{ event.formatted_start }} - {{ event.formatted_end }}
                   </p>
                   <p class="card-text">
                     <img src="{{ url_for('static', filename='img/pinicon.png') }}" alt="Location Icon" class="card-icon">
@@ -81,7 +81,7 @@
                   </p>
                   <p class="card-text">
                     <img src="{{ url_for('static', filename='img/ticketicon.png') }}" alt="Ticket Icon" class="card-icon">
-                    ${{ event.price }}
+                    ${{ "%.2f" | format(event.price) }}
                   </p>
                 </div>
               </div>
