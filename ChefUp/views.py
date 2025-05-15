@@ -11,6 +11,7 @@ from datetime import date
 
 main_bp = Blueprint('main', __name__)
 
+event_bp = Blueprint('events', __name__, url_prefix='/events') 
 
 @main_bp.route('/')
 def index():
@@ -28,7 +29,7 @@ def index():
 
 
 ## will need to move event related stuff to its own file to be neater
-@main_bp.route('/create-event', methods=['GET', 'POST'])
+@event_bp.route('/create-event', methods=['GET', 'POST'])
 def create_event():
     test_user_id = 1
     form = EventForm()
@@ -49,7 +50,6 @@ def create_event():
             user_id=test_user_id,
             status='Open'
         )
-
         db.session.add(new_event)
         db.session.commit()
         flash("Event created successfully!", "success")
@@ -62,7 +62,7 @@ def create_event():
 def booking_history():
     return render_template('booking-history.html')
 
-@main_bp.route('/event/<int:event_id>')
+@event_bp.route('/<int:event_id>')
 def event_detail(event_id):
     event = db.session.get(Event, event_id)
     if event is None:

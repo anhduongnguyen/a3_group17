@@ -2,79 +2,72 @@
 
 {% block content %}
 
+<!-- Hero Banner -->
+<section class="container event-hero py-4 position-relative">
+  <div class="event-hero-background" style="background-image: url('{{ url_for('static', filename=event.image_filename) }}');"></div>
+  <div class="container position-relative z-1 text-center">
+    <img src="{{ url_for('static', filename=event.image_filename) }}" class="img-fluid rounded event-hero-image" alt="Event Cover" />
+  </div>
+</section>
 
-<main class="container detail-page">
-  <section class="container event-hero py-4">
-    <!-- Hero Image -->
-    <div class="container position-relative z-1 text-center">
-      <img src="{{ url_for('static', filename=event.image_filename) }}" class="img-fluid rounded event-hero-image"
-        alt="Event Cover" />
-    </div>
+<div class="container my-4">
+  <div class="row">
 
-    <h1>{{ event.title }}</h1>
-
-    <div class="d-flex flex-wrap align-items-center mb-3">
-      <span class="bg-success rounded detail-badge me-2">{{ event.status }}</span>
-      <span class="bg-secondary rounded detail-badge">{{ event.capacity }} tickets left</span>
-    </div>
-
-    <div class="event-details">
-      <p><strong>Date:</strong> {{ event.date.strftime('%A, %d %B %Y') }}</p>
-      <p><strong>Time:</strong> {{ event.start_time }} - {{ event.end_time }}</p>
-      <p><strong>Location:</strong> {{ event.location }}</p>
-    </div>
-
-    <hr>
-
-    <div class="event-description">
-      <p>{{ event.description }}</p>
-    </div>
-
-    <div>
-      <p><strong>Cuisine:</strong> {{ event.cuisine }}</p>
-      <p><strong>Price:</strong> ${{ event.price }}</p>
-    </div>
-
-
-    <hr>
-    <h4 class="mt-5 mb-5">Comments</h4>
-
-    <div class="comment-box">
-      <textarea class="form-control comment-form" placeholder="Leave a comment..."></textarea>
-      <button class="btn btn-success float-end">Post</button>
-    </div>
-
-    <div class="comment-container">
-      <div class="comment-card">
-        <img src="static/img/profileuser.png" alt="User Profile Icon" class="profile-icon" />
-        <div>
-          <p class="mb-1">
-            <strong>Maria</strong>
-            <span class="small text-muted">- 11.04.2025</span>
-          </p>
-          <p>
-            Sushi is my favourite food and I took this class just so I can
-            learn how to make it whenever I want!
-          </p>
-        </div>
-      </div>
-
-      <div class="comment-card">
-        <img src="static/img/profileuser.png" alt="User Profile Icon" class="profile-icon" />
-        <div>
-          <p class="mb-1">
-            <strong>Ellie</strong>
-            <span class="small text-muted">- 11.04.2025</span>
-          </p>
-          <p>
-            My Friend and I attended this class together and it was a lot fun. 100% would reccomend.
-          </p>
-        </div>
+    <!-- Ticket Box -->
+    <div class="col-lg-4 order-lg-2 order-1 mb-4">
+      <div class="ticket-box">
+        <p class="ticket-price"> ${{ "%.2f" | format(event.price) }}</p>
+        <a href="{{ url_for('main.book_event', event_id=event.id) }}" class="btn btn-ticket">Get tickets</a>
       </div>
     </div>
+
+    <!-- Event Details -->
+    <div class="col-lg-8 order-lg-1 order-2">
+      <h1>{{ event.title }}</h1>
+      <div class="d-flex flex-wrap align-items-center mb-3">
+        <span class="bg-success rounded detail-badge me-2">{{ event.status }}</span>
+        <span class="bg-secondary rounded detail-badge">{{ event.tickets_remaining() }} tickets left</span>
+      </div>
+      <div class="event-details">
+        <p><strong>Date:</strong> {{ event.date.strftime('%A, %d %B %Y') }}</p>
+        <p><strong>Time:</strong> {{ event.start_time }} - {{ event.end_time }}</p>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+        <p><strong>Cuisine:</strong> {{ event.cuisine }}</p>
+      </div>
+
+      <hr>
+
+      <div class="event-description">
+        <p>{{ event.description }}</p>
+      </div>
+
+      <hr>
+
+      <h4 class="mt-5 mb-4">Comments</h4>
+
+      <div class="comment-box mb-3">
+        <textarea class="form-control comment-form" placeholder="Leave a comment..."></textarea>
+        <button class="btn btn-success float-end mt-2">Post</button>
+      </div>
+
+      <div class="comment-container">
+        {% for comment in event.comments %}
+        <div class="comment-card">
+          <img src="{{ url_for('static', filename='img/profileuser.png') }}" alt="User Profile Icon" class="profile-icon" />
+          <div>
+            <p class="mb-1">
+              <strong>{{ comment.user.first_name }}</strong>
+              <span class="small text-muted">- {{ comment.timestamp.strftime('%d.%m.%Y') }}</span>
+            </p>
+            <p>{{ comment.content }}</p>
+          </div>
+        </div>
+        {% else %}
+        <p class="text-muted">No comments yet. Be the first to share your thoughts!</p>
+        {% endfor %}
+      </div>
     </div>
-    </div>
-    </div>
-</main>
+  </div>
+</div>
 
 {% endblock %}
