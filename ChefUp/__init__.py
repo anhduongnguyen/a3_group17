@@ -1,8 +1,10 @@
 # import flask - from 'package' import 'Class'
-from flask import Flask 
+from flask import Flask, render_template 
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_bcrypt import Bcrypt
+import datetime
 
 db = SQLAlchemy()
 
@@ -13,6 +15,7 @@ def create_app():
     app = Flask(__name__)  # this is the name of the module/package that is calling this app
     # Should be set to false in a production environment
     app.debug = True
+    Bcrypt(app)
     app.secret_key = '8D2E19734841292FF3DC76283B6E5'
     # set the app configuration data 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
@@ -43,5 +46,24 @@ def create_app():
 
     from . import auth
     app.register_blueprint(auth.auth_bp)
+    
+    @app.errorhandler(404) 
+    # inbuilt function which takes error as parameter 
+    def not_found(e): 
+      return render_template("404.html", error=e)
+    
+    # this creates a dictionary of variables that are available
+    # to all html templates
+    @app.context_processor
+    def get_year():
+      year = datetime.datetime.today().year
+      return dict(year=year)
+
+    @app.context_processor
+    def price_formatting():
+      def format_price(price):
+         return f"${price:.2f}"  
+      return dict(format_price=format_price)
+  
     
     return app
