@@ -10,6 +10,24 @@ from .models import Event, Booking, Comment, User
 from datetime import date
 from .utils import format_info
 
+options = [
+    'Italian',
+    'Japanese',
+    'Mexican',
+    'Korean',
+    'Vietnamese',
+    'Thai',
+    'Indian',
+    'Chinese',
+    'French',
+    'Spanish',
+    'Greek',
+    'American',
+    'Middle Eastern',
+    'Caribbean',
+    'African',
+    'Other'
+]
 
 main_bp = Blueprint('main', __name__)
 
@@ -17,10 +35,22 @@ event_bp = Blueprint('events', __name__, url_prefix='/events')
 
 @main_bp.route('/')
 def index():
-    events = Event.query.order_by(Event.date).all()
+    selected_option = request.args.get('options')  # Get the selected option from the dropdown
+    filter_message = None
+
+    if selected_option:
+        events = Event.query.filter_by(cuisine=selected_option).order_by(Event.date).all()
+        if not events:
+            filter_message = f'No events found for "{selected_option}" cuisine.'
+    else:
+        events = Event.query.order_by(Event.date).all()
+
     for event in events:
-        format_info(event)  
-    return render_template('index.html', events=events)
+        format_info(event)
+
+    return render_template('index.html', events=events, options=options, selected_option=selected_option, filter_message=filter_message)
+
+
 
 @event_bp.route('/create-event', methods=['GET', 'POST'])
 @login_required
@@ -94,6 +124,21 @@ def internal_server_error(error):
     return render_template('error.html', error_code="500 - Internal Server Error", 
                            message="Something went wrong on our end. Please try again later."), 500
 
+
+@main_bp.route('/search')
+def search():
+    search_query = request.args.get('q', '')  
+    if search_query:
+        events = Event.query.filter(
+            Event.title.ilike(f'%{search_query}%') | Event.description.ilike(f'%{search_query}%')
+        ).order_by(Event.date).all()
+    else:
+        events = Event.query.order_by(Event.date).all()
+
+    for event in events:
+        format_info(event) 
+
+    return render_template('index.html', events=events, search_query=search_query)
 '''
 @main_bp.route('/event-detail/<int:event_id>')
 def event_detail(event_id):

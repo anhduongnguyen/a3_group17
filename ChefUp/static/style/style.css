@@ -455,3 +455,29 @@ footer small {
   max-width: 30rem;
   margin: 2rem auto;
 }
+
+.search-button {
+  font-weight: 600;
+  border-radius: 0.4rem;
+  padding: 0.8rem 1.2rem;
+  text-decoration: none;
+  height: 3rem;
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: -1rem;
+}
+
+.search-button:hover {
+  background-color: #306441;
+}
+
+.search-bar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  height: 3rem;
+  margin-top: 2rem;
+  margin-bottom: -1rem;
+}
+

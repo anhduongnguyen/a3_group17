@@ -2,6 +2,10 @@
 
   {% block content %}
   <main class="container index-page">
+    <form method="GET" action="{{ url_for('main.search') }}" class="d-flex mb-4">
+      <input class="form-control me-2 search-bar" type="search" name="q" placeholder="Search events..." aria-label="Search">
+      <button class="btn btn-success search-button" type="submit">Search</button>
+    </form>
 
     <!-- Hero Section -->
     <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -30,28 +34,32 @@
       </div>
     </div>
 
-    <!-- Cuisine Filter -->
     <div class="container my-4">
-      <div class="row align-items-center">
+      <form method="GET" action="{{ url_for('main.index') }}" class="row align-items-center g-3" onchange="this.submit()">
         <div class="col-auto">
-          <h4 class="mb-0">Browse By Cuisine:</h4>
+          <label for="options" class="col-form-label"><strong>Browse By Cuisine:</strong></label>
         </div>
-        <div class="col-auto">
-          <div class="dropdown">
-            <button class="btn btn-warning dropdown-toggle dropdown-button" type="button" data-bs-toggle="dropdown">
-              Choose Cuisine
-            </button>
-            <ul class="dropdown-menu">
-              {% for cuisine in ['Italian', 'Japanese', 'Mexican', 'Korean', 'Vietnamese', 'Thai', 'Indian', 'Chinese', 'Other'] %}
-                <li><a class="dropdown-item">{{ cuisine }}</a></li>
-              {% endfor %}
-            </ul>
-          </div>
+        <div class="col-auto w-25">
+          <select name="options" id="options" class="form-select">
+            {% for option in options %}
+              <option value="{{ option }}" {% if option == selected_option %}selected{% endif %}>{{ option }}</option>
+            {% endfor %}
+          </select>
         </div>
-      </div>
+      </form>
     </div>
+    {% if selected_option %}
+      <p>
+        Showing events for "<strong>{{ selected_option }}</strong>" cuisine.
+        <a href="{{ url_for('main.index') }}" class="text-decoration-none">Clear Filter</a>
+      </p>
+    {% endif %}
+    
 
     <!-- Event cards -->
+    {% if search_query %}
+    <p>Showing results for "<strong>{{ search_query }}</strong>" ({{ events|length }} results found)</p>
+    {% endif %}
     <div class="container mt-4 pb-5">
       <div class="row g-4 mb-4">
         {% for event in events %}
