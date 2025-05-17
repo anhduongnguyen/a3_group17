@@ -39,15 +39,15 @@
         <div class="col-auto">
           <label for="options" class="col-form-label"><strong>Browse By Cuisine:</strong></label>
         </div>
-        <div class="col-auto w-25">
-          <select name="options" id="options" class="form-select">
+        <div class="col-auto">
+          <select name="options" id="options" class="form-select dropdown-warning">
             {% for option in options %}
               <option value="{{ option }}" {% if option == selected_option %}selected{% endif %}>{{ option }}</option>
             {% endfor %}
           </select>
         </div>
       </form>
-    </div>
+    </div>s
     {% if selected_option %}
       <p>
         Showing events for "<strong>{{ selected_option }}</strong>" cuisine.
