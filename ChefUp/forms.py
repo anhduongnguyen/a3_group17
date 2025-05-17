@@ -63,3 +63,7 @@ class EventForm(FlaskForm):
     image = FileField("Image Upload", validators=[
         FileAllowed(ALLOWED_FILE, 'Only image files are allowed (jpg, png, jpeg)')])
     submit = SubmitField("Submit")
+
+class CommentingForm(FlaskForm):
+    content = TextAreaField("Comment", validators=[InputRequired(), Length(max=500)])
+    submit = SubmitField("Post")

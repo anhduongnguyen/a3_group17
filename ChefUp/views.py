@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Blueprint, current_app, render_template, request, flash, redirect, url_for
 from flask import abort
 from flask_login import current_user, login_required
-from .forms import EventForm
+from .forms import EventForm, CommentingForm
 from . import db
 import os
 from werkzeug.utils import secure_filename
@@ -86,15 +86,28 @@ def create_event():
 def booking_history():
     return render_template('booking-history.html')
 
-@event_bp.route('/<int:event_id>')
+@event_bp.route('/<int:event_id>', methods=['GET', 'POST'])
 def event_detail(event_id):
     event = db.session.get(Event, event_id)
     if event is None:
         abort(404)
     
     format_info(event)  
+    form = CommentingForm()
+    if form.validate_on_submit():
+        new_comment = Comment(
+            content=form.content.data,
+            user_id=current_user.id,
+            event_id=event.id
+        )
+        db.session.add(new_comment)
+        db.session.commit()
+       
+        return redirect(url_for('events.event_detail', event_id=event.id))
+
+    return render_template('event-detail.html', event=event, form=form)
     
-    return render_template('event-detail.html', event=event)
+   
 
 @main_bp.route('/error')
 def error():

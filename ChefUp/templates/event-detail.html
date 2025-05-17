@@ -45,25 +45,34 @@
 
       <h4 class="mt-5 mb-4">Comments</h4>
 
-      <div class="comment-box mb-3">
-        <textarea class="form-control comment-form" placeholder="Leave a comment..."></textarea>
-        <button class="btn btn-success float-end mt-2">Post</button>
-      </div>
+      {% if current_user.is_authenticated %}
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="comment-box mb-3">
+            {{ form.content(class="form-control comment-form", placeholder="Leave a comment...") }}
+            {{ form.submit(class="btn btn-success float-end mt-2") }}
+          </div>
+        </form>
+      {% else %}
+        <div class="alert alert-warning mb-3">
+          You must <a href="{{ url_for('auth.login') }}">log in</a> to post a comment.
+        </div>
+      {% endif %}
 
       <div class="comment-container">
         {% for comment in event.comments %}
-        <div class="comment-card">
-          <img src="{{ url_for('static', filename='img/profileuser.png') }}" alt="User Profile Icon" class="profile-icon" />
-          <div>
-            <p class="mb-1">
-              <strong>{{ comment.user.first_name }}</strong>
-              <span class="small text-muted">- {{ comment.timestamp.strftime('%d.%m.%Y') }}</span>
-            </p>
-            <p>{{ comment.content }}</p>
+          <div class="comment-card">
+            <img src="{{ url_for('static', filename='img/profileuser.png') }}" alt="User Profile Icon" class="profile-icon" />
+            <div>
+              <p class="mb-1">
+                <strong>{{ comment.user.first_name }}</strong>
+                <span class="small text-muted">- {{ comment.timestamp.strftime('%d.%m.%Y %H:%M') }}</span>
+              </p>
+              <p>{{ comment.content }}</p>
+            </div>
           </div>
-        </div>
         {% else %}
-        <p class="text-muted">No comments yet. Be the first to share your thoughts!</p>
+          <p class="text-muted">No comments yet. Be the first to share your thoughts!</p>
         {% endfor %}
       </div>
     </div>
