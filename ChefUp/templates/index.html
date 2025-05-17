@@ -39,15 +39,15 @@
         <div class="col-auto">
           <label for="options" class="col-form-label"><strong>Browse By Cuisine:</strong></label>
         </div>
-        <div class="col-auto">
-          <select name="options" id="options" class="form-select dropdown-warning">
+        <div class="col-auto w-25">
+          <select name="options" id="options" class="form-select">
             {% for option in options %}
               <option value="{{ option }}" {% if option == selected_option %}selected{% endif %}>{{ option }}</option>
             {% endfor %}
           </select>
         </div>
       </form>
-    </div>s
+    </div>
     {% if selected_option %}
       <p>
         Showing events for "<strong>{{ selected_option }}</strong>" cuisine.
@@ -58,7 +58,9 @@
 
     <!-- Event cards -->
     {% if search_query %}
-    <p>Showing results for "<strong>{{ search_query }}</strong>" ({{ events|length }} results found)</p>
+    <p>Showing results for "<strong>{{ search_query }}</strong>" ({{ events|length }} results found).
+      <a href="{{ url_for('main.index') }}" class="text-decoration-none">Clear Search</a>
+    </p>
     {% endif %}
     <div class="container mt-4 pb-5">
       <div class="row g-4 mb-4">
