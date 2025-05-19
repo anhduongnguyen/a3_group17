@@ -65,8 +65,8 @@
             <img src="{{ url_for('static', filename='img/profileuser.png') }}" alt="User Profile Icon" class="profile-icon" />
             <div>
               <p class="mb-1">
-                <strong>{{ comment.user.first_name }}</strong>
-                <span class="small text-muted">- {{ comment.timestamp.strftime('%d.%m.%Y %H:%M') }}</span>
+                <strong>{{ comment.user.first_name }} {{ comment.user.surname[0] }}</strong>
+                <span class="small text-muted">- {{ comment.timestamp.strftime('%d.%m.%Y, %I:%M %p') }}</span>
               </p>
               <p>{{ comment.content }}</p>
             </div>

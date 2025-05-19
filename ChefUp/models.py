@@ -10,7 +10,7 @@ class User(db.Model, UserMixin):
     surname = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
-    contact_number = db.Column(db.String(20), nullable=False)
+    contact_number = db.Column(db.String(10), nullable=False)
     address = db.Column(db.String(200), nullable=False)
 
     bookings = db.relationship('Booking', backref='user', lazy=True)
@@ -34,8 +34,7 @@ class Event(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     bookings = db.relationship('Booking', backref='event', lazy=True)
-    comments = db.relationship('Comment', backref='event', lazy=True)
-
+    comments = db.relationship('Comment', backref='event', lazy='dynamic', order_by='desc(Comment.timestamp)')
     ## calculate the amount of tickets remaining
     def tickets_remaining(self):
         booked = sum(booking.quantity for booking in self.bookings)
