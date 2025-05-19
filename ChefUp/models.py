@@ -28,7 +28,7 @@ class Event(db.Model):
     location = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
     capacity = db.Column(db.Integer, nullable=False)
-    image_filename = db.Column(db.String(100), nullable=True)
+    image_filename = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(20), nullable=False, default="Open")  
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
