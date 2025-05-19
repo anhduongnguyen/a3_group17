@@ -54,7 +54,7 @@ class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
     price_total = db.Column(db.Float, nullable=False)
-    booking_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    booking_time = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
@@ -62,7 +62,7 @@ class Booking(db.Model):
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=datetime.now)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
