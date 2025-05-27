@@ -152,6 +152,51 @@ def search():
         format_info(event) 
 
     return render_template('index.html', events=events, search_query=search_query)
+@event_bp.route('/<int:event_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_event(event_id):
+    event = db.session.get(Event, event_id)
+    if event is None or event.user_id != current_user.id:
+        flash("You are not authorized to edit this event.", "danger")
+        return redirect(url_for('events.event_detail', event_id=event_id))
+
+    # 🟢 Convert time strings to time objects
+    event.start_time = datetime.strptime(event.start_time, '%H:%M').time()
+    event.end_time = datetime.strptime(event.end_time, '%H:%M').time()
+
+    # 🟢 Map model fields to form field names
+    event.event_name = event.title
+    event.event_date = event.date
+
+    # 🟢 Pass pre-filled values to form
+    form = EventForm(obj=event)
+
+    if form.validate_on_submit():
+        event.title = form.event_name.data
+        event.description = form.description.data
+        event.date = form.event_date.data
+        event.start_time = form.start_time.data.strftime('%H:%M')
+        event.end_time = form.end_time.data.strftime('%H:%M')
+        event.cuisine = form.cuisine.data
+        event.location = form.location.data
+        event.price = form.price.data
+        event.capacity = form.tickets.data
+
+        if form.image.data:
+            event.image_filename = check_upload_file(form)
+
+        db.session.commit()
+        flash("Event updated successfully!", "success")
+        return redirect(url_for('events.event_detail', event_id=event.id))
+
+    return render_template(
+        'create-event.html',
+        form=form,
+        event=event,
+        current_date=date.today().strftime('%Y-%m-%d'),
+        page_title="Edit Event"
+    )
+   
 '''
 @main_bp.route('/event-detail/<int:event_id>')
 def event_detail(event_id):

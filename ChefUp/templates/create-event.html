@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% set page_title = page_title if page_title is defined else 'Create New Class' %}
 
   {% if current_user.is_authenticated %}
   <main class="container create-event-page">
@@ -10,7 +11,7 @@
       <div class="container abstract-banner">
         <img src="{{ url_for('static', filename='img/abstractbanner.png') }}" alt="Decorative Image">
       </div>
-      <h1 class="abstract-title">Create New Class</h1>
+      <h1 class="abstract-title">{{ page_title }}</h1>
     </div>
 
     <!-- Form -->
