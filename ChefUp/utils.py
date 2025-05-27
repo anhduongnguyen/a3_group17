@@ -13,3 +13,16 @@ def format_info(event):
         event.formatted_start = event.start_time
         event.formatted_end = event.end_time
     return event
+
+def update_event_status(event):
+    try:
+        if event.date < datetime.now().date():
+            event.status = "Past"
+        elif event.tickets_remaining() == 0:
+            event.status = "Sold Out"
+        else:
+            event.status = "Open"
+    except Exception as e:
+        print(f"Error updating event status: {e}")
+    return event
+
