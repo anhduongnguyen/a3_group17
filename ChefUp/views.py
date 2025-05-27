@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Blueprint, current_app, render_template, request, flash, redirect, url_for
 from flask import abort
 from flask_login import current_user, login_required
-from .forms import EventForm, CommentingForm
+from .forms import CommentingForm, EditEventForm, CreateEventForm
 from . import db
 import os
 from werkzeug.utils import secure_filename
@@ -35,9 +35,8 @@ event_bp = Blueprint('events', __name__, url_prefix='/events')
 
 @main_bp.route('/')
 def index():
-    selected_option = request.args.get('options')  # Get the selected option from the dropdown
+    selected_option = request.args.get('options')  
     filter_message = None
-
     if selected_option:
         events = Event.query.filter_by(cuisine=selected_option).order_by(Event.date).all()
         if not events:
@@ -55,11 +54,19 @@ def index():
 @event_bp.route('/create-event', methods=['GET', 'POST'])
 @login_required
 def create_event():
-    form = EventForm()
+    form = CreateEventForm()
     user_id = current_user.id
-    if form.validate_on_submit(): 
+
+    if form.validate_on_submit():
+        # Require image upload for new events
+        if not form.image.data:
+            flash("Image is required for creating a new event.", "danger")
+            return render_template('create-event.html', form=form, current_date=date.today().strftime('%Y-%m-%d'))
+
+        # Save uploaded image
         image_path = check_upload_file(form)
 
+        # Create new event
         new_event = Event(
             title=form.event_name.data,
             description=form.description.data,
@@ -74,13 +81,15 @@ def create_event():
             user_id=user_id,
             status='Open'
         )
+
         db.session.add(new_event)
         db.session.commit()
         flash("Event created successfully!", "success")
         return redirect(url_for('main.index'))
-    
 
+    # On GET or failed POST
     return render_template('create-event.html', form=form, current_date=date.today().strftime('%Y-%m-%d'))
+
 
 @main_bp.route('/booking-history')
 def booking_history():
@@ -107,15 +116,35 @@ def event_detail(event_id):
 
     return render_template('event-detail.html', event=event, form=form)
     
-   
+@event_bp.route('/book-event/<int:event_id>', methods=['GET', 'POST'])
+@login_required
+def book_event(event_id):
+    event = Event.query.get_or_404(event_id)
+    if request.method == 'POST':
+        quantity = int(request.form.get('quantity', 1))
+        if event.capacity < quantity:
+            flash('Not enough tickets available.', 'danger')
+            return redirect(url_for('events.book_event', event_id=event_id))
+        booking = Booking(
+            user_id=current_user.id,
+            event_id=event.id,
+            quantity=quantity,
+            price_total=(event.price * quantity) + 5,
+            booking_time=datetime.now()
+        )
+    
+  
+        event.capacity -= quantity
+        db.session.add(booking)
+        db.session.commit()
+        flash(f'Booking confirmed! Your order ID is {booking.id}.', 'success')
+        return redirect(url_for('main.booking_history'))
+    return render_template('book-event.html', event=event)   
 
 @main_bp.route('/error')
 def error():
     return render_template('error.html')
 
-@main_bp.route('/book-event')
-def book_event(event_id):
-    return render_template('book-event.html')
 
 def check_upload_file(form):
     file = form.image.data
@@ -152,7 +181,8 @@ def search():
         format_info(event) 
 
     return render_template('index.html', events=events, search_query=search_query)
-@event_bp.route('/<int:event_id>/edit', methods=['GET', 'POST'])
+
+@event_bp.route('edit-event/<int:event_id>', methods=['GET', 'POST'])
 @login_required
 def edit_event(event_id):
     event = db.session.get(Event, event_id)
@@ -160,16 +190,13 @@ def edit_event(event_id):
         flash("You are not authorized to edit this event.", "danger")
         return redirect(url_for('events.event_detail', event_id=event_id))
 
-    # 🟢 Convert time strings to time objects
     event.start_time = datetime.strptime(event.start_time, '%H:%M').time()
     event.end_time = datetime.strptime(event.end_time, '%H:%M').time()
 
-    # 🟢 Map model fields to form field names
     event.event_name = event.title
     event.event_date = event.date
 
-    # 🟢 Pass pre-filled values to form
-    form = EventForm(obj=event)
+    form = EditEventForm(obj=event)
 
     if form.validate_on_submit():
         event.title = form.event_name.data
@@ -180,7 +207,7 @@ def edit_event(event_id):
         event.cuisine = form.cuisine.data
         event.location = form.location.data
         event.price = form.price.data
-        event.capacity = form.tickets.data
+        event.capacity += form.tickets.data
 
         if form.image.data:
             event.image_filename = check_upload_file(form)

@@ -13,23 +13,21 @@
 <div class="container my-4">
   <div class="row">
         
-      
-        <!-- Ticket Box - Right side small card -->
-    <div class="col-lg-4 order-lg-2 order-1 mb-4">
-      <div class="card shadow-sm p-3 text-center">
-        <h5 class="fw-bold mb-3">{{ format_price(event.price) }}</h5>
         
-        <a href="{{ url_for('main.book_event', event_id=event.id) }}" class="btn btn-warning w-100 mb-2">
-          Get tickets
-        </a>
+        <!-- Ticket Box - Right side small card -->
+        <div class="col-lg-4 order-lg-2 order-1 mb-4">
+          <div class="ticket-box">
+            <p class="ticket-price"> {{ format_price(event.price) }}</p>
+            <a href="{{ url_for('events.book_event', event_id=event.id) }}" class="btn btn-ticket">Get Tickets</a>
+            {% if current_user.is_authenticated and current_user.id == event.user_id %}
+              <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">
+                Edit Event
+              </a>
+            {% endif %}
+          </div>
+        </div>
+    
 
-        {% if current_user.is_authenticated and current_user.id == event.user_id %}
-          <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-outline-primary w-100">
-            Edit Event
-          </a>
-        {% endif %}
-      </div>
-    </div>
     <!-- Event Detfails -->
     <div class="col-lg-8 order-lg-1 order-2">
       <h1>{{ event.title }}</h1>

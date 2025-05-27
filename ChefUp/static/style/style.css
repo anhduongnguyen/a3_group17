@@ -298,10 +298,28 @@ footer small {
   font-weight: 600;
   border-radius: 0.4rem;
   text-decoration: none;
+  margin-bottom: 1rem;
+}
+
+
+.btn-edit {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #007bff; /* Bootstrap primary blue */
+  color: rgb(0, 0, 0);
+  font-weight: 600;
+  border-radius: 0.4rem;
+  text-decoration: none;
+  text-align: center;
 }
 
 .btn-ticket:hover {
   background-color: #ffa938;
+}
+
+.btn-edit:hover {
+  background-color: #3b9aff; /* Darker blue on hover */
 }
 
 .event-details {
@@ -481,3 +499,13 @@ footer small {
   margin-bottom: -1rem;
 }
 
+.text-danger.small {
+  margin-top: -1rem; 
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+
+.event-image-preview {
+  max-height: 250px;
+}
