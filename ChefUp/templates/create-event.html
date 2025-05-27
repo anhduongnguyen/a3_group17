@@ -78,6 +78,12 @@
             <div class="d-flex justify-content-center">
               {{ form.submit(class="btn btn-success submit-button") }}
             </div>
+            {% if page_title == "Edit Event" %}
+              <form method="POST" action="{{ url_for('events.cancel_event', event_id=event.id) }}">
+                <input type="hidden" name="confirm_cancel" value="yes">
+                <button type="submit" class="btn btn-danger mt-3">Cancel Event</button>
+              </form>
+            {% endif %}
           </form>
         </div>
       </div>

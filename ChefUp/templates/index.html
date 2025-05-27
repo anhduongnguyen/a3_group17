@@ -73,9 +73,12 @@
                 
                 <div class="card-body">
                   <h5 class="card-title">{{ event.title }}</h5>
-                  {% if event.status %}
+                  {% if event.status == "Cancelled" %}
+                    <span class="badge bg-danger card-badge">Cancelled</span>
+                  {% else %}
                     <span class="badge bg-success card-badge">{{ event.status }}</span>
                   {% endif %}
+
                   <span class="badge bg-info text-dark card-badge">{{ event.cuisine }}</span>
                   <p class="card-text mt-3">
                     <p class="card-text">

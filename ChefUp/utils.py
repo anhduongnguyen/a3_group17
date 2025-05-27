@@ -20,6 +20,8 @@ def update_event_status(event):
             event.status = "Past"
         elif event.tickets_remaining() == 0:
             event.status = "Sold Out"
+        elif event.status == "Cancelled":
+            event.status = "Cancelled"
         else:
             event.status = "Open"
     except Exception as e:

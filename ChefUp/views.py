@@ -152,6 +152,7 @@ def search():
         format_info(event) 
 
     return render_template('index.html', events=events, search_query=search_query)
+
 @event_bp.route('/<int:event_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_event(event_id):
@@ -159,16 +160,12 @@ def edit_event(event_id):
     if event is None or event.user_id != current_user.id:
         flash("You are not authorized to edit this event.", "danger")
         return redirect(url_for('events.event_detail', event_id=event_id))
-
-    # 🟢 Convert time strings to time objects
     event.start_time = datetime.strptime(event.start_time, '%H:%M').time()
     event.end_time = datetime.strptime(event.end_time, '%H:%M').time()
-
-    # 🟢 Map model fields to form field names
     event.event_name = event.title
     event.event_date = event.date
 
-    # 🟢 Pass pre-filled values to form
+    
     form = EventForm(obj=event)
 
     if form.validate_on_submit():
@@ -196,6 +193,22 @@ def edit_event(event_id):
         current_date=date.today().strftime('%Y-%m-%d'),
         page_title="Edit Event"
     )
+@event_bp.route('/<int:event_id>/cancel', methods=['POST'])
+@login_required
+def cancel_event(event_id):
+    event = db.session.get(Event, event_id)
+    if event is None or event.user_id != current_user.id:
+        flash("You are not authorized to cancel this event.", "danger")
+        return redirect(url_for('main.index'))
+
+    if request.form.get("confirm_cancel") == "yes":
+        event.status = "Cancelled"
+        db.session.commit()
+        flash("Event has been successfully cancelled.", "warning")
+        return redirect(url_for('events.event_detail', event_id=event.id))
+
+    flash("Cancellation aborted.", "info")
+    return redirect(url_for('events.edit_event', event_id=event.id))
    
 '''
 @main_bp.route('/event-detail/<int:event_id>')
