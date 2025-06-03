@@ -2,13 +2,13 @@ from datetime import datetime
 from flask import Blueprint, current_app, render_template, request, flash, redirect, url_for
 from flask import abort
 from flask_login import current_user, login_required
-from .forms import CommentingForm, EditEventForm, CreateEventForm
+from .forms import CommentingForm, EditEventForm, CreateEventForm, BookingForm
 from . import db
 import os
 from werkzeug.utils import secure_filename
 from .models import Event, Booking, Comment, User
 from datetime import date
-from .utils import format_info
+from .utils import format_info, update_event_status
 
 options = [
     'Italian',
@@ -115,31 +115,6 @@ def event_detail(event_id):
         return redirect(url_for('events.event_detail', event_id=event.id))
 
     return render_template('event-detail.html', event=event, form=form)
-    
-@event_bp.route('/book-event/<int:event_id>', methods=['GET', 'POST'])
-@login_required
-def book_event(event_id):
-    event = Event.query.get_or_404(event_id)
-    if request.method == 'POST':
-        quantity = int(request.form.get('quantity', 1))
-        if event.capacity < quantity:
-            flash('Not enough tickets available.', 'danger')
-            return redirect(url_for('events.book_event', event_id=event_id))
-        booking = Booking(
-            user_id=current_user.id,
-            event_id=event.id,
-            quantity=quantity,
-            price_total=(event.price * quantity) + 5,
-            booking_time=datetime.now()
-        )
-    
-  
-        event.capacity -= quantity
-        db.session.add(booking)
-        db.session.commit()
-        flash(f'Booking confirmed! Your order ID is {booking.id}.', 'success')
-        return redirect(url_for('main.booking_history'))
-    return render_template('book-event.html', event=event)   
 
 @main_bp.route('/error')
 def error():
@@ -223,20 +198,38 @@ def edit_event(event_id):
         current_date=date.today().strftime('%Y-%m-%d'),
         page_title="Edit Event"
     )
-   
-'''
-@main_bp.route('/event-detail/<int:event_id>')
-def event_detail(event_id):
-    # Optional: fetch event from database using event_id
-    return render_template('event-detail.html', event_id=event_id)
     
-@main_bp.route('/book-event/<int:event_id>', methods=['POST'])
+@event_bp.route('book-event/<int:event_id>', methods=['GET', 'POST'])
 @login_required
 def book_event(event_id):
-    # Add booking logic here (e.g., create Booking instance)
-    # Example:
-    # quantity = int(request.form['quantity'])
-    # create booking record in DB
-    flash('Successfully booked the event!', 'success')
-    return redirect(url_for('main.booking_history'))
-'''
+    event = Event.query.get_or_404(event_id)
+    form = BookingForm()
+
+    if form.validate_on_submit():
+        quantity = form.num_tickets.data
+
+        # Prevent overbooking
+        if quantity > event.tickets_remaining():
+            flash(f"Only {event.tickets_remaining()} tickets remaining. Please reduce your quantity.", 'danger')
+            return redirect(url_for('events.book_event', event_id=event.id))
+
+        # Generate unique booking code
+        booking = Booking(
+            quantity=quantity,
+            user_id=current_user.id,
+            event_id=event.id,
+        )
+        booking.booking_code = booking.generate_booking_code()
+
+        db.session.add(booking)
+
+        # Update event status
+        update_event_status(event)
+
+        db.session.commit()
+
+        # Redirect to a booking confirmation page (optional), or back to event page
+        flash(f"Successfully booked {quantity} ticket(s)! Booking ID: #{booking.booking_code}", 'success')
+        return redirect(url_for('main.index'))  
+
+    return render_template('book-event.html', event=event, form=form)

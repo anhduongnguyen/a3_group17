@@ -1,6 +1,7 @@
 from . import db
 from datetime import datetime, timezone
 from flask_login import UserMixin
+import random, string
 
 # Tables outline
 
@@ -39,6 +40,8 @@ class Event(db.Model):
     def tickets_remaining(self):
         booked = sum(booking.quantity for booking in self.bookings)
         return max(0, self.capacity - booked)
+    
+
 
     """
     def update_status(self):
@@ -52,12 +55,20 @@ class Event(db.Model):
 
 class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    booking_code = db.Column(db.String(10), unique=True, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-    price_total = db.Column(db.Float, nullable=False)
     booking_time = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+    
+    
+    def generate_booking_code(self, length=6):
+        while True:
+            code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
+            if not Booking.query.filter_by(booking_code=code).first():
+                return code
+
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)

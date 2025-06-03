@@ -13,23 +13,30 @@
       <div class="col-md-10 col-lg-8">
         <h2 class="text-center mb-4 pb-3">Login</h2>
 
-        <form method="POST" action="{{ url_for('auth.login') }}">
-        {{ form.hidden_tag() }}
-
-        <div class="mb-3">
-            <label class="form-label"><strong>Email Adress</strong></label>
+        <form method="POST" action="{{ url_for('auth.login') }}" novalidate>
+          {{ form.hidden_tag() }}
+        
+          <div class="mb-3">
+            <label class="form-label"><strong>Email Address</strong></label>
             {{ form.email(class="form-control", placeholder="email") }}
-        </div>
-
-        <div class="mb-3">
+            {% for error in form.email.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+        
+          <div class="mb-3">
             <label class="form-label"><strong>Password</strong></label>
             {{ form.password(class="form-control", placeholder="password") }}
-        </div>
-
-        <div class="mb-3 pb-3 pt-3 text-center">
+            {% for error in form.password.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
+        
+          <div class="mb-3 pb-3 pt-3 text-center">
             <button type="submit" class="btn btn-success w-50">Login</button>
-        </div>
+          </div>
         </form>
+        
 
         <div class="text-center mt-3">
         <p>New user? <a href="{{ url_for('auth.register') }}">Click here</a> to register.</p>
