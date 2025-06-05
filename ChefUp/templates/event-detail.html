@@ -18,7 +18,17 @@
         <div class="col-lg-4 order-lg-2 order-1 mb-4">
           <div class="ticket-box">
             <p class="ticket-price"> {{ format_price(event.price) }}</p>
-            <a href="{{ url_for('events.book_event', event_id=event.id) }}" class="btn btn-ticket">Get Tickets</a>
+        
+            {% if event.tickets_remaining() == 0 %}
+              <a class="btn btn-ticket disabled" aria-disabled="true" tabindex="-1" title="Sold out">
+                Get Tickets
+              </a>
+            {% else %}
+              <a href="{{ url_for('events.book_event', event_id=event.id) }}" class="btn btn-ticket">
+                Get Tickets
+              </a>
+            {% endif %}
+        
             {% if current_user.is_authenticated and current_user.id == event.user_id %}
               <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">
                 Edit Event
@@ -26,9 +36,9 @@
             {% endif %}
           </div>
         </div>
-    
+        
 
-    <!-- Event Detfails -->
+    <!-- Event Details -->
     <div class="col-lg-8 order-lg-1 order-2">
       <h1>{{ event.title }}</h1>
       <div class="d-flex flex-wrap align-items-center mb-3">

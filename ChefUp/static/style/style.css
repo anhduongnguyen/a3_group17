@@ -377,10 +377,36 @@ footer small {
 }
 
 .event-booking-header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
   align-items: center;
-  margin-bottom: 0.625rem;
-
 }
+
+@media (max-width: 768px) {
+  .event-booking-header {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.form-control.ticket-input {
+  width: 50%;
+  min-width: 150px;
+  max-width: 300px;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0.5rem 0.75rem;
+}
+
+@media (max-width: 576px) {
+  .form-control.ticket-input {
+    width: 80%;
+  }
+}
+
+
 
 .booking-head{
   padding-left: 6rem;

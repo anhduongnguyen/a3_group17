@@ -204,6 +204,7 @@ def edit_event(event_id):
 def book_event(event_id):
     event = Event.query.get_or_404(event_id)
     form = BookingForm()
+    format_info(event)
 
     if form.validate_on_submit():
         quantity = form.num_tickets.data
@@ -228,7 +229,7 @@ def book_event(event_id):
 
         db.session.commit()
 
-        # Redirect to a booking confirmation page (optional), or back to event page
+        # Will need to 
         flash(f"Successfully booked {quantity} ticket(s)! Booking ID: #{booking.booking_code}", 'success')
         return redirect(url_for('main.index'))  
 

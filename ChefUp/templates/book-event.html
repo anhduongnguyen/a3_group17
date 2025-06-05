@@ -6,20 +6,20 @@
   {% if current_user.is_authenticated %}
   <main class="container booking-page my-2">
 
-    <!-- Event Header -->
-    <div class="container booking-head">
-      <section class="row mb-4 gx-0 event-booking-header">
-        <div class="col-lg-7 pe-lg-4">
-          <h3>Book Your Spot For:</h3>
-          <h2>Sushi Platter Making For Beginners</h2>
-          <p>Wednesday, 23rd April 2025, 11:00 am - 1:30 pm</p>
-          <span class="bg-secondary rounded detail-badge">12 tickets left</span>
-        </div>
-        <div class="col-lg-5 text-center mt-3 mt-lg-0">
-          <img src="{{ url_for('static', filename='img/sushiclass.png') }}" class="img-fluid event-booking-img" alt="Event Image">
-        </div>
-      </section>
-    </div>
+  <!-- Event Header -->
+  <div class="container booking-head">
+    <section class="row mb-4 gx-0 event-booking-header">
+      <div class="col-lg-7 pe-lg-4">
+        <h3>Book Your Spot For:</h3>
+        <h2>{{ event.title }}</h2>
+        <p>{{ event.formatted_date }}, {{ event.formatted_start }} - {{ event.formatted_end }}</p>
+        <span class="bg-secondary rounded detail-badge">{{ event.tickets_remaining() }} tickets left</span>
+      </div>
+      <div class="col-lg-5 text-center mt-3 mt-lg-0">
+        <img src="{{ url_for('static', filename=event.image_filename) }}" class="img-fluid event-booking-img" alt="Event Image">
+      </div>
+    </section>
+  </div>
   
     <!-- Booking Form -->
     <div class="d-flex justify-content-center">
@@ -29,7 +29,7 @@
             {{ form.hidden_tag() }}
             <div class="form-group text-center">
               {{ form.num_tickets.label(class="form-label") }}
-              {{ form.num_tickets(class="form-control w-50 mx-auto text-center") }}
+              {{ form.num_tickets(class="form-control ticket-input") }}
             </div>
             <div class="text-center">
               {{ form.submit(class="btn btn-success submit-button") }}

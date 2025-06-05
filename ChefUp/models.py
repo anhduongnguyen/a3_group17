@@ -42,17 +42,6 @@ class Event(db.Model):
         return max(0, self.capacity - booked)
     
 
-
-    """
-    def update_status(self):
-        if self.date < datetime.now(timezone.utc).date():
-            self.status = "Past"
-        elif self.tickets_remaining() == 0:
-            self.status = "Sold Out"
-        else:
-            self.status = "Open"
-    """
-
 class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     booking_code = db.Column(db.String(10), unique=True, nullable=False)
