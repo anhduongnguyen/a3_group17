@@ -8,7 +8,7 @@ import os
 from werkzeug.utils import secure_filename
 from .models import Event, Booking, Comment, User
 from datetime import date
-from .utils import format_info, update_event_status
+from .utils import format_info
 
 options = [
     'Italian',
@@ -62,6 +62,11 @@ def create_event():
         if not form.image.data:
             flash("Image is required for creating a new event.", "danger")
             return render_template('create-event.html', form=form, current_date=date.today().strftime('%Y-%m-%d'))
+        
+        # Check if end_time is earlier than or equal to start_time
+        if form.end_time.data <= form.start_time.data:
+            form.end_time.errors.append("End time must be after start time.")
+            return render_template('create-event.html', form=form)
 
         # Save uploaded image
         image_path = check_upload_file(form)
@@ -71,15 +76,15 @@ def create_event():
             title=form.event_name.data,
             description=form.description.data,
             date=form.event_date.data,
-            start_time=form.start_time.data.strftime('%H:%M'),
-            end_time=form.end_time.data.strftime('%H:%M'),
+            start_time=form.start_time.data,
+            end_time=form.end_time.data,
             cuisine=form.cuisine.data,
             location=form.location.data,
             price=form.price.data,
             capacity=form.tickets.data,
             image_filename=image_path,
             user_id=user_id,
-            status='Open'
+            status = "Published"  # Default status for new events
         )
 
         db.session.add(new_event)
@@ -223,9 +228,7 @@ def book_event(event_id):
         booking.booking_code = booking.generate_booking_code()
 
         db.session.add(booking)
-
-        # Update event status
-        update_event_status(event)
+        
 
         db.session.commit()
 
