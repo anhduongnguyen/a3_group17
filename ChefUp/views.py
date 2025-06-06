@@ -170,9 +170,6 @@ def edit_event(event_id):
         flash("You are not authorized to edit this event.", "danger")
         return redirect(url_for('events.event_detail', event_id=event_id))
 
-    event.start_time = datetime.strptime(event.start_time, '%H:%M').time()
-    event.end_time = datetime.strptime(event.end_time, '%H:%M').time()
-
     event.event_name = event.title
     event.event_date = event.date
 
@@ -182,8 +179,8 @@ def edit_event(event_id):
         event.title = form.event_name.data
         event.description = form.description.data
         event.date = form.event_date.data
-        event.start_time = form.start_time.data.strftime('%H:%M')
-        event.end_time = form.end_time.data.strftime('%H:%M')
+        event.start_time = form.start_time.data 
+        event.end_time = form.end_time.data 
         event.cuisine = form.cuisine.data
         event.location = form.location.data
         event.price = form.price.data
