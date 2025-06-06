@@ -121,6 +121,14 @@
       </div>
     </div>
 
+  {% if event and page_title == "Edit Event" %}
+  <form method="POST" action="{{ url_for('events.cancel_event', event_id=event.id) }}" 
+        onsubmit="return confirm('are you sure you want to cancel the event');" 
+        class="d-flex justify-content-center mt-3">
+    <button type="submit" class="btn btn-danger btn-sm px-4">Cancel Event</button>
+  </form>
+{% endif %}
+
   </main>
 
   {% endif %}

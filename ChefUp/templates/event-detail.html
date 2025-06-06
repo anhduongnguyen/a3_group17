@@ -19,7 +19,11 @@
           <div class="ticket-box">
             <p class="ticket-price"> {{ format_price(event.price) }}</p>
         
-            {% if event.tickets_remaining() == 0 %}
+            {% if event.update_event_status == "Cancelled" %}
+              <a class="btn btn-ticket disabled" aria-disabled="true" tabindex="-1" title="Event Cancelled">
+                Event Cancelled
+              </a>
+            {% elif event.tickets_remaining() == 0 %}
               <a class="btn btn-ticket disabled" aria-disabled="true" tabindex="-1" title="Sold out">
                 Get Tickets
               </a>

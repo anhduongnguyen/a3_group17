@@ -234,3 +234,14 @@ def book_event(event_id):
         return redirect(url_for('main.index'))  
 
     return render_template('book-event.html', event=event, form=form)
+@event_bp.route('/cancel-event/<int:event_id>', methods=['POST'])
+@login_required
+def cancel_event(event_id):
+    event = db.session.get(Event, event_id)
+    if event is None or event.user_id != current_user.id:
+        flash("You are not authorized to cancel this event.", "danger")
+        return redirect(url_for('events.event_detail', event_id=event_id))
+    event.status = "Cancelled"
+    db.session.commit()
+    flash("Event hcancelled.", "warning")
+    return redirect(url_for('events.edit_event', event_id=event_id))
