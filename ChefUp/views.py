@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Blueprint, current_app, render_template, request, flash, redirect, url_for
+from flask import Blueprint, current_app, render_template, request, flash, redirect, url_for, abort
 from flask import abort
 from flask_login import current_user, login_required
 from .forms import CommentingForm, EditEventForm, CreateEventForm, BookingForm
@@ -8,24 +8,13 @@ import os
 from werkzeug.utils import secure_filename
 from .models import Event, Booking, Comment, User
 from datetime import date
-from .utils import format_info
+from .utils import format_info, validate_times
 
 options = [
-    'Italian',
-    'Japanese',
-    'Mexican',
-    'Korean',
-    'Vietnamese',
-    'Thai',
-    'Indian',
-    'Chinese',
-    'French',
-    'Spanish',
-    'Greek',
-    'American',
-    'Middle Eastern',
-    'Caribbean',
-    'African',
+    'Italian', 'Japanese', 'Mexican',
+    'Korean', 'Vietnamese', 'Thai',
+    'Indian', 'Chinese', 'French',
+    'Spanish', 'Greek', 'Caribbean',
     'Other'
 ]
 
@@ -47,9 +36,8 @@ def index():
     for event in events:
         format_info(event)
 
-    return render_template('index.html', events=events, options=options, selected_option=selected_option, filter_message=filter_message)
-
-
+    return render_template('index.html', events=events, options=options, 
+                           selected_option=selected_option, filter_message=filter_message)
 
 @event_bp.route('/create-event', methods=['GET', 'POST'])
 @login_required
@@ -58,20 +46,20 @@ def create_event():
     user_id = current_user.id
 
     if form.validate_on_submit():
-        # Require image upload for new events
         if not form.image.data:
             flash("Image is required for creating a new event.", "danger")
-            return render_template('create-event.html', form=form, current_date=date.today().strftime('%Y-%m-%d'))
-        
-        # Check if end_time is earlier than or equal to start_time
-        if form.end_time.data <= form.start_time.data:
-            form.end_time.errors.append("End time must be after start time.")
-            return render_template('create-event.html', form=form)
 
-        # Save uploaded image
+        errors = validate_times(form.event_date.data, form.start_time.data, form.end_time.data)
+        for error in errors:
+            if "End time" in error:
+                form.end_time.errors.append(error)
+            else:
+                form.start_time.errors.append(error)
+
+        if not form.image.data or errors:
+            return render_template('create-event.html', form=form, current_date=date.today())
+
         image_path = check_upload_file(form)
-
-        # Create new event
         new_event = Event(
             title=form.event_name.data,
             description=form.description.data,
@@ -84,7 +72,7 @@ def create_event():
             capacity=form.tickets.data,
             image_filename=image_path,
             user_id=user_id,
-            status = "Published"  # Default status for new events
+            status="Published"
         )
 
         db.session.add(new_event)
@@ -92,8 +80,8 @@ def create_event():
         flash("Event created successfully!", "success")
         return redirect(url_for('main.index'))
 
-    # On GET or failed POST
-    return render_template('create-event.html', form=form, current_date=date.today().strftime('%Y-%m-%d'))
+    return render_template('create-event.html', form=form, current_date=date.today())
+
 
 
 @main_bp.route('/booking-history')
@@ -176,6 +164,21 @@ def edit_event(event_id):
     form = EditEventForm(obj=event)
 
     if form.validate_on_submit():
+        errors = validate_times(form.event_date.data, form.start_time.data, form.end_time.data)
+        if errors:
+            for error in errors:
+                if "End time" in error:
+                    form.end_time.errors.append(error)
+                else:
+                    form.start_time.errors.append(error)
+            return render_template(
+                'create-event.html',
+                form=form,
+                event=event,
+                current_date=date.today(),
+                page_title="Edit Event"
+            )
+
         event.title = form.event_name.data
         event.description = form.description.data
         event.date = form.event_date.data
@@ -197,10 +200,11 @@ def edit_event(event_id):
         'create-event.html',
         form=form,
         event=event,
-        current_date=date.today().strftime('%Y-%m-%d'),
+        current_date=date.today(),
         page_title="Edit Event"
     )
-    
+
+
 @event_bp.route('book-event/<int:event_id>', methods=['GET', 'POST'])
 @login_required
 def book_event(event_id):
@@ -213,7 +217,8 @@ def book_event(event_id):
 
         # Prevent overbooking
         if quantity > event.tickets_remaining():
-            flash(f"Only {event.tickets_remaining()} tickets remaining. Please reduce your quantity.", 'danger')
+            flash(f"Only {event.tickets_remaining()} tickets remaining. Please reduce your quantity.", 
+                  'danger')
             return redirect(url_for('events.book_event', event_id=event.id))
 
         # Generate unique booking code
@@ -229,11 +234,12 @@ def book_event(event_id):
 
         db.session.commit()
 
-        # Will need to 
+        # need to update redirect to the booking history page
         flash(f"Successfully booked {quantity} ticket(s)! Booking ID: #{booking.booking_code}", 'success')
         return redirect(url_for('main.index'))  
 
     return render_template('book-event.html', event=event, form=form)
+
 @event_bp.route('/cancel-event/<int:event_id>', methods=['POST'])
 @login_required
 def cancel_event(event_id):
@@ -243,5 +249,10 @@ def cancel_event(event_id):
         return redirect(url_for('events.event_detail', event_id=event_id))
     event.status = "Cancelled"
     db.session.commit()
-    flash("Event hcancelled.", "warning")
-    return redirect(url_for('events.edit_event', event_id=event_id))
+    flash("Event has been cancelled.", "warning")
+    return redirect(url_for('main.index', event_id=event_id))
+
+# Simulate a 500 error for testing purposes
+@main_bp.route('/trigger-500')
+def trigger_500():
+    abort(500)

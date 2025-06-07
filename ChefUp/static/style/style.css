@@ -67,9 +67,15 @@
 }
 
 .card-badge {
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
   height: 1.5rem;
-  font-size: 0.81rem;
+  width: auto;
+  font-size: 0.85rem;
   font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  color: #fff9f9;
 }
 
 /* Global text and headings */
@@ -260,15 +266,17 @@ footer small {
 }
 
 .detail-badge {
-  display: inline-block;
-  color: white;
-  font-weight: 400;
-  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+  font-size: 0.95rem;
   padding: 0.4rem 0.8rem;
   border-radius: 0.5rem;
   text-align: center;
   margin-bottom: 1.2rem;
-  width: 3.13rem;
+  width: 12.5rem;
   height: 2.18rem;
 }
 
@@ -332,14 +340,6 @@ footer small {
   padding-right: 2rem;
 }
 
-.detail-badge {
-  font-weight: 600;
-  font-size: 0.95rem;
-  display: inline-block;
-  text-align: center;
-  width: 12.5rem;
-  height: 2.18rem;
-}
 
 .event-description {
   padding-right: 5rem;
