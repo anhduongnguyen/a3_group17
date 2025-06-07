@@ -13,9 +13,8 @@ CUISINE_CHOICES = [
     ('Italian', 'Italian'), ('Japanese', 'Japanese'), ('Mexican', 'Mexican'),
     ('Korean', 'Korean'), ('Vietnamese', 'Vietnamese'), ('Thai', 'Thai'),
     ('Indian', 'Indian'), ('Chinese', 'Chinese'), ('French', 'French'),
-    ('Spanish', 'Spanish'), ('Greek', 'Greek'), ('American', 'American'),
-    ('Middle Eastern', 'Middle Eastern'), ('Caribbean', 'Caribbean'),
-    ('African', 'African'), ('Other', 'Other')
+    ('Spanish', 'Spanish'), ('Greek', 'Greek'), ('Caribbean', 'Caribbean'), 
+    ('Other', 'Other')
 ]
 
 # creates the login information
@@ -68,8 +67,8 @@ class CreateEventForm(FlaskForm):
         ('', 'Select cuisine'),  
         *CUISINE_CHOICES], 
         validators=[InputRequired("Cuisine type is required")])
-    tickets = IntegerField("Number of Tickets", validators=[
-        InputRequired("Number of tickets mmust be set")], default=1)
+    tickets = IntegerField(validators=[InputRequired("Number of tickets must be set")], 
+                           default=1)
     price = FloatField("Price (AUD)", validators=[InputRequired("Price is required")])
     location = StringField("Location", validators=[
         InputRequired("Event Location is required"), 
@@ -97,8 +96,7 @@ class EditEventForm(FlaskForm):
         ('', 'Select cuisine'), 
         *CUISINE_CHOICES
         ], validators=[InputRequired("Cuisine type is required")])
-    tickets = IntegerField("Number of tickets mmust be set", validators=[
-        InputRequired("")], default=1)
+    tickets = IntegerField(default=0)
     price = FloatField("Price (AUD)", validators=[InputRequired("Price is required")])
     location = StringField("Location", validators=[
         InputRequired(), 

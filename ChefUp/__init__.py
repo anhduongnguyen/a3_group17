@@ -3,6 +3,7 @@ from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
+from .utils import status_badge_class
 import datetime
 
 db = SQLAlchemy()
@@ -12,6 +13,8 @@ def create_app():
     app.debug = True
     app.secret_key = '8D2E19734841292FF3DC76283B6E5'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
+    app.jinja_env.filters['badge_class'] = status_badge_class
+
 
     db.init_app(app)
     Bcrypt(app)
@@ -47,5 +50,5 @@ def create_app():
         def format_price(price):
             return f"${price:.2f}"
         return dict(format_price=format_price)
-
+    
     return app

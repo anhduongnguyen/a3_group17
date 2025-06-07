@@ -1,109 +1,112 @@
 {% extends "base.html" %}
 
-  {% block content %}
-  <main class="container index-page">
-    <form method="GET" action="{{ url_for('main.search') }}" class="d-flex mb-4">
-      <input class="form-control me-2 search-bar" type="search" name="q" placeholder="Search events..." aria-label="Search">
-      <button class="btn btn-success search-button" type="submit">Search</button>
+{% block content %}
+<main class="container index-page">
+  <form method="GET" action="{{ url_for('main.search') }}" class="d-flex mb-4">
+    <input class="form-control me-2 search-bar" type="search" name="q" placeholder="Search events..."
+      aria-label="Search">
+    <button class="btn btn-success search-button" type="submit">Search</button>
+  </form>
+
+  <!-- Hero Section -->
+  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="hero-banner hero-banner-1">
+          <div class="slogan-container">
+            <h1 class="display-4">Learn to cook, <br> one class at a time</h1>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="hero-banner hero-banner-2">
+          <div class="slogan-container">
+            <h1 class="display-4">Discover new flavours <br> with ChefUp</h1>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="hero-banner hero-banner-3">
+          <div class="slogan-container">
+            <h1 class="display-4">Master your skills <br> from top chefs</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container my-4">
+    <form method="GET" action="{{ url_for('main.index') }}" class="row align-items-center g-3" onchange="this.submit()">
+      <div class="col-auto">
+        <label for="options" class="col-form-label"><strong>Browse By Cuisine:</strong></label>
+      </div>
+      <div class="col-auto w-25">
+        <form method="GET" action="{{ url_for('main.index') }}" onchange="this.form.submit()" class="filter-form">
+          <select name="options" id="options" class="form-select">
+            <option value="" disabled selected>Select cuisine</option> <!-- Placeholder option -->
+            {% for option in options %}
+            <option value="{{ option }}" {% if option==selected_option %}selected{% endif %}>{{ option }}</option>
+            {% endfor %}
+          </select>
+        </form>
+      </div>
     </form>
+  </div>
+  {% if selected_option %}
+  <p>
+    Showing events for "<strong>{{ selected_option }}</strong>" cuisine.
+    <a href="{{ url_for('main.index') }}" class="text-decoration-none">Clear Filter</a>
+  </p>
+  {% endif %}
 
-    <!-- Hero Section -->
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <div class="hero-banner hero-banner-1">
-            <div class="slogan-container">
-              <h1 class="display-4">Learn to cook, <br> one class at a time</h1>
+
+  <!-- Event cards -->
+  {% if search_query %}
+  <p>Showing results for "<strong>{{ search_query }}</strong>" ({{ events|length }} results found).
+    <a href="{{ url_for('main.index') }}" class="text-decoration-none">Clear Search</a>
+  </p>
+  {% endif %}
+  <div class="container mt-4 pb-5">
+    <div class="row g-4 mb-4">
+      {% for event in events %}
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+        <a href="{{ url_for('events.event_detail', event_id=event.id) }}" class="text-decoration-none text-dark">
+          <div class="card h-100">
+            <img src="{{ url_for('static', filename=event.image_filename) }}" class="event-photo-card card-img-top"
+              alt="{{ event.title }}">
+
+            <div class="card-body">
+              <h5 class="card-title">{{ event.title }}</h5>
+              {% if event.update_event_status %}
+              <span class="badge bg-{{ event.update_event_status | badge_class }} card-badge">
+                {{ event.update_event_status }} </span>
+              {% endif %}
+              <span class="badge bg-info text-dark card-badge">{{ event.cuisine }}</span>
+              <p class="card-text mt-3">
+              <p class="card-text">
+                <img src="{{ url_for('static', filename='img/calendaricon.png') }}" alt="Calendar Icon"
+                  class="card-icon">
+                {{ event.formatted_date }}
+              </p>
+              <p class="card-text">
+                <img src="{{ url_for('static', filename='img/clockicon.png') }}" alt="Clock Icon" class="card-icon">
+                {{ event.formatted_start }} - {{ event.formatted_end }}
+              </p>
+              <p class="card-text">
+                <img src="{{ url_for('static', filename='img/pinicon.png') }}" alt="Location Icon" class="card-icon">
+                {{ event.location }}
+              </p>
+              <p class="card-text">
+                <img src="{{ url_for('static', filename='img/ticketicon.png') }}" alt="Ticket Icon" class="card-icon">
+                {{ format_price(event.price) }}
+              </p>
             </div>
           </div>
-        </div>
-        <div class="carousel-item">
-          <div class="hero-banner hero-banner-2">
-            <div class="slogan-container">
-              <h1 class="display-4">Discover new flavours <br> with ChefUp</h1>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="hero-banner hero-banner-3">
-            <div class="slogan-container">
-              <h1 class="display-4">Master your skills <br> from top chefs</h1>
-            </div>
-          </div>
-        </div>
+        </a>
       </div>
+      {% endfor %}
     </div>
+  </div>
 
-    <div class="container my-4">
-      <form method="GET" action="{{ url_for('main.index') }}" class="row align-items-center g-3" onchange="this.submit()">
-        <div class="col-auto">
-          <label for="options" class="col-form-label"><strong>Browse By Cuisine:</strong></label>
-        </div>
-        <div class="col-auto w-25">
-          <form method="GET" action="{{ url_for('main.index') }}" onchange="this.form.submit()" class="filter-form">
-            <select name="options" id="options" class="form-select">
-              <option value="" disabled selected>Select cuisine</option> <!-- Placeholder option -->
-              {% for option in options %}
-                <option value="{{ option }}" {% if option == selected_option %}selected{% endif %}>{{ option }}</option>
-              {% endfor %}
-            </select>
-          </form>
-        </div>
-      </form>
-    </div>
-    {% if selected_option %}
-      <p>
-        Showing events for "<strong>{{ selected_option }}</strong>" cuisine.
-        <a href="{{ url_for('main.index') }}" class="text-decoration-none">Clear Filter</a>
-      </p>
-    {% endif %}
-    
 
-    <!-- Event cards -->
-    {% if search_query %}
-    <p>Showing results for "<strong>{{ search_query }}</strong>" ({{ events|length }} results found).
-      <a href="{{ url_for('main.index') }}" class="text-decoration-none">Clear Search</a>
-    </p>
-    {% endif %}
-    <div class="container mt-4 pb-5">
-      <div class="row g-4 mb-4">
-        {% for event in events %}
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-            <a href="{{ url_for('events.event_detail', event_id=event.id) }}" class="text-decoration-none text-dark">
-              <div class="card h-100">
-                <img src="{{ url_for('static', filename=event.image_filename) }}" 
-                class="event-photo-card card-img-top" alt="{{ event.title }}">
-                
-                <div class="card-body">
-                  <h5 class="card-title">{{ event.title }}</h5>
-                  {% if event.update_event_status %}
-                    <span class="badge bg-success card-badge">{{ event.update_event_status }}</span>
-                  {% endif %}
-                  <span class="badge bg-info text-dark card-badge">{{ event.cuisine }}</span>
-                  <p class="card-text mt-3">
-                    <p class="card-text">
-                      <img src="{{ url_for('static', filename='img/calendaricon.png') }}" alt="Calendar Icon" class="card-icon">
-                      {{ event.formatted_date }}
-                    </p>
-                    <p class="card-text">
-                      <img src="{{ url_for('static', filename='img/clockicon.png') }}" alt="Clock Icon" class="card-icon">
-                      {{ event.formatted_start }} - {{ event.formatted_end }}
-                    </p>
-                  <p class="card-text">
-                    <img src="{{ url_for('static', filename='img/pinicon.png') }}" alt="Location Icon" class="card-icon">
-                    {{ event.location }}
-                  </p>
-                  <p class="card-text">
-                    <img src="{{ url_for('static', filename='img/ticketicon.png') }}" alt="Ticket Icon" class="card-icon">
-                    {{ format_price(event.price) }}
-                  </p>
-                </div>
-              </div>
-            </a>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
-
-   
   {% endblock %}
