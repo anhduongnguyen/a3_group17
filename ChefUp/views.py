@@ -22,24 +22,97 @@ main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    selected_option = request.args.get('options')  
-    filter_message = None
-    if selected_option:
-        events = Event.query.filter_by(cuisine=selected_option).order_by(Event.date).all()
-        if not events:
-            filter_message = f'No events found for "{selected_option}" cuisine.'
-    else:
-        events = Event.query.order_by(Event.date).all()
+    selected_option = request.args.get("options")
+    events = Event.query.order_by(Event.date.asc()).all()
 
+    open_events = []
     for event in events:
-        format_info(event)
+        if event.update_event_status == "Open":
+            format_info(event)
+            if not selected_option or event.cuisine == selected_option:
+                open_events.append(event)
 
-    return render_template('index.html', events=events, options=options, 
-                           selected_option=selected_option, filter_message=filter_message)
+    return render_template('index.html', events=open_events, options=options, selected_option=selected_option)
+
+
 
 @main_bp.route('/booking-history')
+@login_required
 def booking_history():
-    return render_template('booking-history.html')
+    now = datetime.now()
+
+    # --- Booked Events ---
+    bookings = (
+        Booking.query.filter_by(user_id=current_user.id)
+        .join(Event)
+        .add_entity(Event)
+        .order_by(Event.date.desc())
+        .all()
+    )
+
+    upcoming_booked = []
+    inactive_booked = []
+
+    for booking, event in bookings:
+        format_info(event)
+        event_end = datetime.combine(event.date, event.end_time)
+        booking_info = {
+            "title": event.title,
+            "cuisine": event.cuisine,
+            "image": event.image_filename,
+            "update_event_status": event.update_event_status,
+            "date": event.formatted_date, 
+            "start_time": event.formatted_start, 
+            "end_time": event.formatted_end,     
+            "booking_code": booking.booking_code,
+            "booking_date": booking.booking_time.strftime("%a, %d %b %Y"),
+            "booking_time": booking.booking_time.strftime("%I:%M %p"),
+            "event_id": event.id,
+            "status": event.status,
+        }
+        if event_end >= now:
+            upcoming_booked.append(booking_info)
+        else:
+            inactive_booked.append(booking_info)
+
+    # --- Created Events ---
+    created_events = (
+        Event.query.filter_by(user_id=current_user.id)
+        .order_by(Event.date.desc())
+        .all()
+    )
+
+    upcoming_created = []
+    inactive_created = []
+
+    for event in created_events:
+        format_info(event)
+        event_end = datetime.combine(event.date, event.end_time)
+        created_info = {
+            "title": event.title,
+            "cuisine": event.cuisine,
+            "image": event.image_filename or "static/img/default.jpg",
+            "update_event_status": event.update_event_status,
+            "date": event.formatted_date,
+            "start_time": event.formatted_start,
+            "end_time": event.formatted_end,
+            "tickets_remaining": event.tickets_remaining(),
+            "event_id": event.id,
+            "status": event.status,
+        }
+        if event.update_event_status == "Cancelled" or event_end < now:
+            inactive_created.append(created_info)
+        else:
+            upcoming_created.append(created_info)
+
+    return render_template(
+        'booking-history.html',
+        upcoming_booked=upcoming_booked,
+        inactive_booked=inactive_booked,
+        upcoming_created=upcoming_created,
+        inactive_created=inactive_created
+    )
+
 
 @main_bp.route('/error')
 def error():
@@ -60,16 +133,20 @@ def internal_server_error(error):
 def search():
     search_query = request.args.get('q', '')  
     if search_query:
-        events = Event.query.filter(
+        all_events = Event.query.filter(
             Event.title.ilike(f'%{search_query}%') | Event.description.ilike(f'%{search_query}%')
         ).order_by(Event.date).all()
     else:
-        events = Event.query.order_by(Event.date).all()
+        all_events = Event.query.order_by(Event.date).all()
 
-    for event in events:
-        format_info(event) 
+    events = []
+    for event in all_events:
+        if event.update_event_status == "Open":
+            format_info(event)
+            events.append(event)
 
     return render_template('index.html', events=events, search_query=search_query)
+
 
 # Simulate a 500 error for testing purposes
 @main_bp.route('/trigger-500')

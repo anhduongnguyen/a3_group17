@@ -1,326 +1,188 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-  <meta charset="UTF-8">
-  <title>ChefUp | My Events</title>
-  <link rel="icon" type="image/x-icon" href="static/img/logo.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="static/style/style.css">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
-    rel="stylesheet">
-</head>
-
-<body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg custom-navbar">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">
-        <img src="static/img/logo.png" alt="ChefUp Logo" class="logo-img" href="index.html" />
-        <span class="chefup-brand">ChefUp</span>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="create-event.html">Create Class</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="booking-history.html">My Events</a>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="#">Log Out</a></li>
-        </ul>
-      </div>
+{% block content %}
+<main class="my-events-page">
+  <!-- Hero Banner -->
+  <div class="container position-relative text-center">
+    <div class="container mb-5 abstract-banner">
+      <img src="static/img/abstractbanner.png" alt="Decorative Image">
     </div>
-  </nav>
+    <h1 class="abstract-title">My Events</h1>
+  </div>
+  <div class="container">
 
-  <main class="my-events-page">
-    <!-- Hero Banner -->
-    <div class="container position-relative text-center">
-      <div class="container mb-5 abstract-banner">
-        <img src="static/img/abstractbanner.png" alt="Decorative Image">
-      </div>
-      <h1 class="abstract-title">My Events</h1>
-    </div>
-    <div class="container">
-      <div class="container">
-        <h2 class="mb-4 pt-3">My Booked Classes</h2>
-        <hr>
-        <h4 class="mb-3">Upcoming</h4>
-        <div class="row g-4 mb-5">
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <a href="event-detail.html" class="text-decoration-none text-dark">
-              <div class="card h-100">
-                <img src="static/img/sushiclass.png" class="card-img-top event-photo-card" alt="Sushi Event">
-                <div class="card-body">
-                  <h5 class="card-title">Sushi Platter Making For Beginners</h5>
-                  <span class="badge bg-success card-badge">open</span>
-                  <span class="badge bg-info text-dark card-badge">Japanese</span>
-                  <div class="card-text mt-3">
-                    <p><strong>Event Date:</strong> Wed, 23 Apr 2025</p>
-                    <p><strong>Booking ID:</strong> #CC98JG</p>
-                    <p><strong>Booking Date:</strong> Fri, 11 Apr 2025</p>
-                    <p><strong>Booking Time:</strong> 3:51 pm</p>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
+    <!-- My Booked Classes -->
+    <h2 class="mb-4 pt-3">My Booked Classes</h2>
 
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <a href="event-detail.html" class="text-decoration-none text-dark">
-              <div class="card h-100">
-                <img src="static/img/sushiclass.png" class="card-img-top event-photo-card" alt="Sushi Event">
-                <div class="card-body">
-                  <h5 class="card-title">Sushi Platter Making For Beginners</h5>
-                  <span class="badge bg-success card-badge">open</span>
-                  <span class="badge bg-info text-dark card-badge">Japanese</span>
-                  <div class="card-text mt-3">
-                    <p><strong>Event Date:</strong> Wed, 23 Apr 2025</p>
-                    <p><strong>Booking ID:</strong> #CCY897</p>
-                    <p><strong>Booking Date:</strong> Fri, 11 Apr 2025</p>
-                    <p><strong>Booking Time:</strong> 3:52 pm</p>
-                  </div>
-                </div>
+    <h4>Upcoming</h4>
+    <div class="row g-4 mb-5">
+      {% for booking in upcoming_booked %}
+      <div class="col-md-3">
+        <a href="{{ url_for('events.event_detail', event_id=booking.event_id) }}"
+          class="text-dark text-decoration-none">
+          <div class="card h-100">
+            <img src="{{ url_for('static', filename=booking.image) }}" class="event-photo-card card-img-top"
+              alt="{{ booking.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ booking.title }}</h5>
+              {% if booking.update_event_status %}
+              <span class="badge bg-{{ booking.update_event_status | badge_class }} card-badge">
+                {{ booking.update_event_status }}
+              </span>
+              {% endif %}
+              <span class="badge bg-info text-dark card-badge">{{ booking.cuisine }}</span>
+              <div class="card-text mt-3">
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/ticketicon.png') }}" alt="Ticket Icon" class="card-icon">
+                  <strong>Booking ID:</strong> #{{ booking.booking_code }}
+                </p>
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/calendaricon.png') }}" alt="Calendar Icon"
+                    class="card-icon">
+                  <strong>Booking Date: </strong>{{ booking.booking_date }}
+                </p>
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/clockicon.png') }}" alt="Clock Icon" class="card-icon">
+                  <strong>Booking Time: </strong>{{ booking.booking_time }}
+                </p>
               </div>
-            </a>
-          </div>
-
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <a href="event-detail.html" class="text-decoration-none text-dark">
-              <div class="card h-100">
-                <img src="static/img/sushiclass.png" class="card-img-top event-photo-card" alt="Sushi Event">
-                <div class="card-body">
-                  <h5 class="card-title">Sushi Platter Making For Beginners</h5>
-                  <span class="badge bg-success card-badge">open</span>
-                  <span class="badge bg-info text-dark card-badge">Japanese</span>
-                  <div class="card-text mt-3">
-                    <p><strong>Event Date:</strong> Wed, 23 Apr 2025</p>
-                    <p><strong>Booking ID:</strong> #CC98U5</p>
-                    <p><strong>Booking Date:</strong> Fri, 11 Apr 2025</p>
-                    <p><strong>Booking Time:</strong> 3:53 pm</p>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <a href="event-detail.html" class="text-decoration-none text-dark">
-              <div class="card h-100">
-                <img src="static/img/sushiclass.png" class="card-img-top event-photo-card" alt="Sushi Event">
-                <div class="card-body">
-                  <h5 class="card-title">Sushi Platter Making For Beginners</h5>
-                  <span class="badge bg-success card-badge">open</span>
-                  <span class="badge bg-info text-dark card-badge">Japanese</span>
-                  <div class="card-text mt-3">
-                    <p><strong>Event Date:</strong> Wed, 23 Apr 2025</p>
-                    <p><strong>Booking ID:</strong> #CC23A5</p>
-                    <p><strong>Booking Date:</strong> Fri, 11 Apr 2025</p>
-                    <p><strong>Booking Time:</strong> 3:54 pm</p>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <hr>
-      <div class="container">
-        <h4 class="mb-3">Past</h4>
-        <div class="row g-4 mb-5">
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <a href="#" class="text-decoration-none text-dark">
-              <div class="card h-100">
-                <img src="static/img/pastaclass.png" class="card-img-top event-photo-card" alt="Pasta Class">
-                <div class="card-body">
-                  <h5 class="card-title">Pasta Making Class</h5>
-                  <span class="badge bg-secondary card-badge">Inactive</span>
-                  <span class="badge bg-info text-dark card-badge">Italian</span>
-                  <div class="card-text mt-3">
-                    <p><strong>Event Date:</strong> Mon, 3 Mar 2025</p>
-                    <p><strong>Booking ID:</strong> #CCI8J0</p>
-                    <p><strong>Booking Date:</strong> Tue, 25 Feb 2025</p>
-                    </p>
-                    <p><strong>Booking Time:</strong> 2:12 pm</p>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <a href="#" class="text-decoration-none text-dark">
-              <div class="card h-100">
-                <img src="static/img/pastaclass.png" class="card-img-top event-photo-card" alt="Pasta Class">
-                <div class="card-body">
-                  <h5 class="card-title">Pasta Making Class</h5>
-                  <span class="badge bg-secondary card-badge">Inactive</span>
-                  <span class="badge bg-info text-dark card-badge">Italian</span>
-                  <div class="card-text mt-3">
-                    <p><strong>Event Date:</strong> Mon, 3 Mar 2025</p>
-                    <p><strong>Booking ID:</strong> #CCG63</p>
-                    <p><strong>Booking Date:</strong> Tue, 25 Feb 2025</p>
-                    </p>
-                    <p><strong>Booking Time:</strong> 12:12 am</p>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Created Classes Section -->
-      <div class="container">
-        <h2 class="mb-4 pt-5">My Created Classes</h2>
-        <hr>
-        <h4 class="mb-3">Upcoming</h4>
-        <div class="row g-4 mb-5">
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <a href="#" class="text-decoration-none text-dark">
-              <div class="card h-100">
-                <img src="static/img/vietnameseclass.png" class="card-img-top event-photo-card" alt="Vietnamese Food">
-                <div class="card-body">
-                  <h5 class="card-title">Spring Rolls Masterclass</h5>
-                  <span class="badge bg-success card-badge">open</span>
-                  <span class="badge bg-info text-dark card-badge">Vietnamese</span>
-                  <div class="card-text mt-3">
-                    <p><strong>Event Date:</strong> Thu, 10 May 2025</p>
-                    <p><strong>Event Time:</strong> 10:30 am</p>
-                    <p><strong>Tickets Left:</strong> 15</p>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <a href="#" class="text-decoration-none text-dark">
-              <div class="card h-100">
-                <img src="static/img/vietnameseclass.png" class="card-img-top event-photo-card" alt="Vietnamese Food">
-                <div class="card-body">
-                  <h5 class="card-title">Spring Rolls Masterclass</h5>
-                  <span class="badge bg-warning card-badge">Sold Out</span>
-                  <span class="badge bg-info text-dark card-badge">Vietnamese</span>
-                  <div class="card-text mt-3">
-                    <p><strong>Event Date:</strong> Thu, 21 May 2025</p>
-                    <p><strong>Event Time:</strong> 5:00 pm</p>
-                    <p><strong>Tickets Left:</strong> 15</p>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <div class="container">
-          <hr>
-          <h4 class="mb-3">Past</h4>
-          <div class="row g-4 mb-5">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <a href="#" class="text-decoration-none text-dark">
-                <div class="card h-100">
-                  <img src="static/img/vietnameseclass2.png" class="card-img-top event-photo-card"
-                    alt="Vietnamese Food">
-                  <div class="card-body">
-                    <h5 class="card-title">Vietnamese Pho Workshop</h5>
-                    <span class="badge bg-danger card-badge">Cancelled</span>
-                    <span class="badge bg-info text-dark card-badge">Vietnamese</span>
-                    <div class="card-text mt-3">
-                      <p><strong>Event Date:</strong> Wed, 01 Jan 2025</p>
-                      <p><strong>Event Time:</strong> 8:00 am</p>
-                      <p><strong>Tickets Sold:</strong> 10 </p>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <a href="#" class="text-decoration-none text-dark">
-                <div class="card h-100">
-                  <img src="static/img/vietnameseclass2.png" class="card-img-top event-photo-card"
-                    alt="Vietnamese Food">
-                  <div class="card-body">
-                    <h5 class="card-title">Vietnamese Pho Workshop</h5>
-                    <span class="badge bg-secondary card-badge">Inactive</span>
-                    <span class="badge bg-info text-dark card-badge">Vietnamese</span>
-                    <div class="card-text mt-3">
-                      <p><strong>Event Date:</strong> Sat, 12 Dec 2024</p>
-                      <p><strong>Event Time:</strong> 2:00 pm</p>
-                      <p><strong>Tickets Sold:</strong> 15</p>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <a href="#" class="text-decoration-none text-dark">
-                <div class="card h-100">
-                  <img src="static/img/vietnameseclass2.png" class="card-img-top event-photo-card"
-                    alt="Vietnamese Food">
-                  <div class="card-body">
-                    <h5 class="card-title">Vietnamese Pho Workshop</h5>
-                    <span class="badge bg-secondary card-badge">Inactive</span>
-                    <span class="badge bg-info text-dark card-badge">Vietnamese</span>
-                    <div class="card-text mt-3">
-                      <p><strong>Event Date:</strong> Tue, 29 Nov 2024</p>
-                      <p><strong>Event Time:</strong> 12:00 pm</p>
-                      <p><strong>Tickets Sold:</strong> 7</p>
-                    </div>
-                  </div>
-                </div>
-              </a>
             </div>
           </div>
-        </div>
+        </a>
       </div>
+      {% else %}
+      <p>No upcoming bookings.</p>
+      {% endfor %}
     </div>
-  </main>
 
-  <!-- Footer -->
-  <footer class="mt-auto custom-footer">
-    <div class="container">
-      <div class="row justify-content-between">
-        <div class="col-md-4 mb-4">
-          <h5>About Us</h5>
-          <p class="text-muted">
-            ChefUp connects cooking enthusiasts with hands-on workshops taught by passionate instructors. Learn, cook,
-            and share!
-          </p>
-          <div class="media-icons">
-            <span>
-              <img src="static/img/instagram.png" alt="Instagram Icon" class="media-icon">
-              <img src="static/img/facebook.png" alt="Facebook Icon" class="media-icon">
-              <img src="static/img/twitter.png" alt="Twitter Icon" class="media-icon">
-              <img src="static/img/linkedin.png" alt="LinkedIn Icon" class="media-icon">
-            </span>
+    <h4>Inactive</h4>
+    <div class="row g-4 mb-5">
+      {% for booking in inactive_booked %}
+      <div class="col-md-3">
+        <a href="{{ url_for('events.event_detail', event_id=booking.event_id) }}"
+          class="text-dark text-decoration-none">
+          <div class="card h-100">
+            <img src="{{ url_for('static', filename=booking.image) }}" class="event-photo-card card-img-top"
+              alt="{{ booking.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ booking.title }}</h5>
+              {% if booking.update_event_status %}
+              <span class="badge bg-{{ booking.update_event_status | badge_class }} card-badge">
+                {{ booking.update_event_status }}
+              </span>
+              {% endif %}
+              <span class="badge bg-info text-dark card-badge">{{ booking.cuisine }}</span>
+              <div class="card-text mt-3">
+                <p class="card-text">
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/ticketicon.png') }}" alt="Ticket Icon" class="card-icon">
+                  <strong>Booking ID: </strong> #{{ booking.booking_code }}
+                </p>
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/calendaricon.png') }}" alt="Calendar Icon"
+                    class="card-icon">
+                  <strong>Booking Date: </strong>{{ booking.booking_date }}
+                </p>
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/clockicon.png') }}" alt="Clock Icon" class="card-icon">
+                  <strong> Booking Time </strong>{{ booking.booking_time }}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <h5>Quick Links</h5>
-          <ul class="list-unstyled footer-list">
-            <li><a href="index.html" class="footer-link">Home</a></li>
-            <li><a href="create-event.html" class="footer-link">Create Class</a></li>
-            <li><a href="#" class="footer-link">Contact</a></li>
-          </ul>
-        </div>
+        </a>
       </div>
+      {% else %}
+      <p>No inactive bookings.</p>
+      {% endfor %}
     </div>
-    <hr class="mb-3 mt-2">
-    <div class="row">
-      <div class="col text-center">
-        <small class="text-muted">&copy; 2025 ChefUp. All rights reserved.</small>
+
+    <hr>
+    <!-- My Created Classes -->
+    <h2 class="mb-4 pt-5">My Created Classes</h2>
+
+    <h4>Upcoming</h4>
+    <div class="row g-4 mb-5">
+      {% for created in upcoming_created %}
+      <div class="col-md-3">
+        <a href="{{ url_for('events.event_detail', event_id=created.event_id) }}"
+          class="text-dark text-decoration-none">
+          <div class="card h-100">
+            <img src="{{ url_for('static', filename=created.image) }}" class="event-photo-card card-img-top"
+              alt="{{ created.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ created.title }}</h5>
+              {% if created.update_event_status %}
+              <span class="badge bg-{{ created.update_event_status | badge_class }} card-badge">
+                {{ created.update_event_status }}
+              </span>
+              {% endif %}
+              <span class="badge bg-info text-dark card-badge">{{ created.cuisine }}</span>
+              <div class="card-text mt-3">
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/calendaricon.png') }}" alt="Calendar Icon"
+                    class="card-icon">
+                  {{ created.date }}
+                </p>
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/clockicon.png') }}" alt="Clock Icon" class="card-icon">
+                  {{ created.start_time }} - {{ created.end_time }}
+                </p>
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/ticketicon.png') }}" alt="Ticket Icon" class="card-icon">
+                  <strong> Tickets Remaining: </strong> {{ created.tickets_remaining }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </a>
       </div>
+      {% else %}
+      <p>No upcoming created events.</p>
+      {% endfor %}
     </div>
-  </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <h4>Inactive</h4>
+    <div class="row g-4 mb-5">
+      {% for created in inactive_created %}
+      <div class="col-md-3">
+        <a href="{{ url_for('events.event_detail', event_id=created.event_id) }}"
+          class="text-dark text-decoration-none">
+          <div class="card h-100">
+            <img src="{{ url_for('static', filename=created.image) }}" class="event-photo-card card-img-top"
+              alt="{{ created.title }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ created.title }}</h5>
+              {% if created.update_event_status %}
+              <span class="badge bg-{{ created.update_event_status | badge_class }} card-badge">
+                {{ created.update_event_status }}
+              </span>
+              {% endif %}
+              <span class="badge bg-info text-dark card-badge">{{ created.cuisine }}</span>
+              <div class="card-text mt-3">
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/calendaricon.png') }}" alt="Calendar Icon"
+                    class="card-icon">
+                  {{ created.date }}
+                </p>
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/clockicon.png') }}" alt="Clock Icon" class="card-icon">
+                  {{ created.start_time }} - {{ created.end_time }}
+                </p>
+                <p class="card-text">
+                  <img src="{{ url_for('static', filename='img/ticketicon.png') }}" alt="Ticket Icon" class="card-icon">
+                  <strong>Tickets Remaining:</strong> {{ created.tickets_remaining }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% else %}
+      <p>No inactive created events.</p>
+      {% endfor %}
+    </div>
+  </div>
+</main>
 
-</html>
+{% endblock %}

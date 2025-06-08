@@ -145,7 +145,7 @@ def book_event(event_id):
         if quantity > event.tickets_remaining():
             flash(f"Only {event.tickets_remaining()} tickets remaining. Please reduce your quantity.", 
                   'danger')
-            return redirect(url_for('events.book_event', event_id=event.id))
+            return redirect(url_for('main.booking_history', event_id=event.id))
 
         # Generate unique booking code
         booking = Booking(
@@ -162,7 +162,7 @@ def book_event(event_id):
 
         # need to update redirect to the booking history page
         flash(f"Successfully booked {quantity} ticket(s)! Booking ID: #{booking.booking_code}", 'success')
-        return redirect(url_for('main.index'))  
+        return redirect(url_for('main.booking_history')) 
 
     return render_template('events/book-event.html', event=event, form=form)
 
