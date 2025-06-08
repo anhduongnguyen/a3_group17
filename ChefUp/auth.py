@@ -5,9 +5,10 @@ from .models import User
 from .forms import LoginForm, RegisterForm
 from . import db
 
-# Create a blueprint
+# Create a blueprint for authentication routes
 auth_bp = Blueprint('auth', __name__)
 
+# Route for the login page
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     login_form = LoginForm()
@@ -30,7 +31,7 @@ def login():
 
     return render_template('login.html', form=login_form)
 
-
+# Route for the registration page
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     register_form = RegisterForm()
@@ -57,7 +58,7 @@ def register():
 
     return render_template('register.html', form=register_form)
 
-
+# Route for logging out
 @auth_bp.route('/logout')
 @login_required
 def logout():

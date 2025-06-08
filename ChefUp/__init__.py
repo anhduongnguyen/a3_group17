@@ -15,13 +15,11 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
     app.jinja_env.filters['badge_class'] = status_badge_class
 
-
-
     db.init_app(app)
     Bcrypt(app)
     Bootstrap5(app)
 
-    # Login manager setup
+    # Set up Flask-Login
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
@@ -40,7 +38,8 @@ def create_app():
     app.register_blueprint(events.event_bp)
     app.register_blueprint(auth.auth_bp)
 
-    # Context processors
+    # Context processors for injecting the current year 
+    # and price formatting function
     @app.context_processor
     def inject_year():
         return dict(year=datetime.datetime.today().year)

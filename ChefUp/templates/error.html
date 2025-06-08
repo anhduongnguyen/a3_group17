@@ -1,8 +1,11 @@
+<!-- Error page template -->
+
 {% extends "base.html" %}
 {% block title %}Error{% endblock %}
 
 {% block content %}
 <div class="container text-center py-5">
+  {# Display the error code (404, 500) and error message #}
   <h1>{{ error_code }}</h1>
   <h3>{{ message }}</h3>
   <a href="{{ url_for('main.index') }}" class="btn btn-success mt-4">Back to Home</a>

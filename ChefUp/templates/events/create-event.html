@@ -1,3 +1,5 @@
+<!-- Event Creation & Editing Page -->
+
 {% extends "base.html" %}
 
 {% block content %}
@@ -14,9 +16,11 @@
     <h1 class="abstract-title">{{ page_title }}</h1>
   </div>
 
-  <!-- Form -->
+  <!-- Event Form -->
   <div class="bg-light shadow-sm py-5 px-4 create-event-form">
     <div class="row justify-content-center">
+
+      <!-- Main event form: used for both create and edit -->
       <div class="col-md-8 col-lg-6">
         <form method="POST" enctype="multipart/form-data" novalidate>
           {{ form.hidden_tag() }}
@@ -114,9 +118,10 @@
             {% endfor %}
           </div>
 
+          <!-- Submit button: disabled if event is not open-->
           <div class="text-center mt-4">
             {% if event and (event.status == "Cancelled" or (event.date < current_date) or
-              (event.update_event_status=="inactive" )) %} <button class="btn btn-success submit-button" disabled>
+              (event.update_event_status=="Inactive" )) %} <button class="btn btn-success submit-button" disabled>
               Submit</button>
               {% else %}
               {{ form.submit(class="btn btn-success submit-button") }}
@@ -128,9 +133,10 @@
   </div>
 
   {% if event and page_title == "Edit Event" %}
+  <!-- Cancel Event button (edit mode only, disabled if inactive/cancelled) -->
   <form method="POST" action="{{ url_for('events.cancel_event', event_id=event.id) }}"
     onsubmit="return confirm('are you sure you want to cancel the event?');" class="d-flex justify-content-center mt-3">
-    {% if event.status == "Cancelled" or (event.date < current_date) or (event.update_event_status=="inactive" ) %}
+    {% if event.status == "Cancelled" or (event.date < current_date) or (event.update_event_status=="Inactive" ) %}
       <button type="submit" class="btn btn-danger btn-sm px-4" disabled>Cancel Event</button>
       {% else %}
       <button type="submit" class="btn btn-danger btn-sm px-4">Cancel Event</button>

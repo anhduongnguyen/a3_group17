@@ -1,14 +1,17 @@
+<!-- ChefUp Home Page -->
 {% extends "base.html" %}
 
 {% block content %}
 <main class="container index-page">
+
+  {# Search Bar #}
   <form method="GET" action="{{ url_for('main.search') }}" class="d-flex mb-4">
     <input class="form-control me-2 search-bar" type="search" name="q" placeholder="Search events..."
       aria-label="Search">
     <button class="btn btn-success search-button" type="submit">Search</button>
   </form>
 
-  <!-- Hero Section -->
+  <!-- Hero Section (ChefUp banners) -->
   <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
@@ -35,6 +38,7 @@
     </div>
   </div>
 
+  <!-- Cuisine filter dropdown-->
   <div class="container my-4">
     <form method="GET" action="{{ url_for('main.index') }}" class="row align-items-center g-3" onchange="this.submit()">
       <div class="col-auto">
@@ -50,6 +54,7 @@
       </div>
     </form>
   </div>
+  {# Display message if cuisine is selected #}
   {% if selected_option %}
   <p>
     Showing events for "<strong>{{ selected_option }}</strong>" cuisine.
@@ -57,13 +62,14 @@
   </p>
   {% endif %}
 
-
-  <!-- Event cards -->
+  {# Display search query message #}
   {% if search_query %}
   <p>Showing results for "<strong>{{ search_query }}</strong>" ({{ events|length }} results found).
     <a href="{{ url_for('main.index') }}" class="text-decoration-none">Clear Search</a>
   </p>
   {% endif %}
+
+  <!-- Upcoming event cards -->
   <div class="container mt-4 pb-5">
     <div class="row g-4 mb-4">
       {% for event in events %}
@@ -102,8 +108,9 @@
         </a>
       </div>
       {% else %}
+      {# Fallback if no events match filters/search #}
       <div class="col-12 text-center my-5">
-        <p>No open events found.</p>
+        <p>No upcoming events found.</p>
       </div>
       {% endfor %}
     </div>

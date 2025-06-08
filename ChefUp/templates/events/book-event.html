@@ -1,3 +1,5 @@
+<!-- Event Booking Page -->
+
 {% extends "base.html" %}
 
 {% block content %}
@@ -32,13 +34,15 @@
             {{ form.num_tickets.label(class="form-label") }}
             {{ form.num_tickets(class="form-control ticket-input") }}
           </div>
+
+          <!-- Disable booking button if event not open -->
           <div class="text-center">
             {% if event.update_event_status == "Cancelled" %}
             <button class="btn btn-success submit-button" disabled>Event Cancelled</button>
-            {% elif event.tickets_remaining() == 0 %}
-            <button class="btn btn-success submit-button" disabled>Tickets Sold Out</button>
-            {% elif event.update_event_status == "inactive" %}
+            {% elif event.update_event_status == "Inactive" %}
             <button class="btn btn-success submit-button" disabled>Event Ended</button>
+            {% elif event.tickets_remaining() == 0 %}
+            <button class="btn btn-success submit-button" disabled> Sold Out</button>
             {% else %}
             {{ form.submit(class="btn btn-success submit-button") }}
             {% endif %}
@@ -49,7 +53,6 @@
   </div>
 
 </main>
-
 
 {% else %}
 <div class="alert alert-warning text-center">

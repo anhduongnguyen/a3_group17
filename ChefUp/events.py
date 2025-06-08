@@ -10,8 +10,10 @@ from .models import Event, Booking, Comment, User
 from datetime import date
 from .utils import format_info, validate_times, check_upload_file
 
+# Create a blueprint for event-related routes
 event_bp = Blueprint('events', __name__, url_prefix='/events') 
 
+# Route to create a new event
 @event_bp.route('/create-event', methods=['GET', 'POST'])
 @login_required
 def create_event():
@@ -22,6 +24,7 @@ def create_event():
         if not form.image.data:
             flash("Image is required for creating a new event.", "danger")
 
+        # Validate the event date and times
         errors = validate_times(form.event_date.data, form.start_time.data, form.end_time.data)
         for error in errors:
             if "End time" in error:
@@ -32,6 +35,7 @@ def create_event():
         if not form.image.data or errors:
             return render_template('events/create-event.html', form=form, current_date=date.today())
 
+        # Save image and create the event
         image_path = check_upload_file(form)
         new_event = Event(
             title=form.event_name.data,
@@ -55,6 +59,7 @@ def create_event():
 
     return render_template('events/create-event.html', form=form, current_date=date.today())
 
+# Route to view event's details and comments
 @event_bp.route('/<int:event_id>', methods=['GET', 'POST'])
 def event_detail(event_id):
     event = db.session.get(Event, event_id)
@@ -64,6 +69,8 @@ def event_detail(event_id):
     format_info(event)  
     form = CommentingForm()
     if form.validate_on_submit():
+
+        # save comment to the database
         new_comment = Comment(
             content=form.content.data,
             user_id=current_user.id,
@@ -77,6 +84,7 @@ def event_detail(event_id):
 
     return render_template('events/event-detail.html', event=event, form=form)
 
+# Route to edit an existing event (only for the event owner)
 @event_bp.route('edit-event/<int:event_id>', methods=['GET', 'POST'])
 @login_required
 def edit_event(event_id):
@@ -90,6 +98,7 @@ def edit_event(event_id):
 
     form = EditEventForm(obj=event)
 
+    # Validate the event date and times
     if form.validate_on_submit():
         errors = validate_times(form.event_date.data, form.start_time.data, form.end_time.data)
         if errors:
@@ -105,7 +114,8 @@ def edit_event(event_id):
                 current_date=date.today(),
                 page_title="Edit Event"
             )
-
+        
+        # Update event details
         event.title = form.event_name.data
         event.description = form.description.data
         event.date = form.event_date.data
@@ -116,6 +126,7 @@ def edit_event(event_id):
         event.price = form.price.data
         event.capacity += form.tickets.data
 
+        # Update image if a new image is uploaded
         if form.image.data:
             event.image_filename = check_upload_file(form)
 
@@ -131,6 +142,7 @@ def edit_event(event_id):
         page_title="Edit Event"
     )
 
+# Route to book tickets for an event
 @event_bp.route('book-event/<int:event_id>', methods=['GET', 'POST'])
 @login_required
 def book_event(event_id):
@@ -141,13 +153,13 @@ def book_event(event_id):
     if form.validate_on_submit():
         quantity = form.num_tickets.data
 
-        # Prevent overbooking
+        # Prevent overbooking beyond remaining capacity
         if quantity > event.tickets_remaining():
             flash(f"Only {event.tickets_remaining()} tickets remaining. Please reduce your quantity.", 
                   'danger')
             return redirect(url_for('main.booking_history', event_id=event.id))
 
-        # Generate unique booking code
+        # Create booking and generate unique booking code
         booking = Booking(
             quantity=quantity,
             user_id=current_user.id,
@@ -156,16 +168,14 @@ def book_event(event_id):
         booking.booking_code = booking.generate_booking_code()
 
         db.session.add(booking)
-        
-
         db.session.commit()
 
-        # need to update redirect to the booking history page
         flash(f"Successfully booked {quantity} ticket(s)! Booking ID: #{booking.booking_code}", 'success')
         return redirect(url_for('main.booking_history')) 
 
     return render_template('events/book-event.html', event=event, form=form)
 
+# Route to cancel an event (only for the event owner)
 @event_bp.route('/cancel-event/<int:event_id>', methods=['POST'])
 @login_required
 def cancel_event(event_id):
@@ -173,6 +183,7 @@ def cancel_event(event_id):
     if event is None or event.user_id != current_user.id:
         flash("You are not authorized to cancel this event.", "danger")
         return redirect(url_for('events.event_detail', event_id=event_id))
+    
     event.status = "Cancelled"
     db.session.commit()
     flash("Event has been cancelled.", "success")

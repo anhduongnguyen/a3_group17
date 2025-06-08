@@ -1,48 +1,52 @@
+<!-- Login Page-->
+
 {% extends "base.html" %}
 {% from "bootstrap5/form.html" import render_form %}
 {% block content %}
 
+{# If user is already logged in, show a message instead of the form #}
 {% if current_user.is_authenticated %}
-  <div class="container mt-5">
-    <h1 class="text-center">You are already logged in!</h1>
-    <h3 class="text-center">Please log out to access the login page.</h3>
-  </div>
-  {% else %}
+<div class="container mt-5">
+  <h1 class="text-center">You are already logged in!</h1>
+  <h3 class="text-center">Please log out to access the login page.</h3>
+</div>
+{% else %}
+
+{# Login form section #}
 <div class="container bg-light shadow-sm p-4 mt-5 register-form">
-    <div class="row justify-content-center">
-      <div class="col-md-10 col-lg-8">
-        <h2 class="text-center mb-4 pb-3">Login</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <h2 class="text-center mb-4 pb-3">Login</h2>
 
-        <form method="POST" action="{{ url_for('auth.login') }}" novalidate>
-          {{ form.hidden_tag() }}
-        
-          <div class="mb-3">
-            <label class="form-label"><strong>Email Address</strong></label>
-            {{ form.email(class="form-control", placeholder="email") }}
-            {% for error in form.email.errors %}
-              <div class="text-danger small">{{ error }}</div>
-            {% endfor %}
-          </div>
-        
-          <div class="mb-3">
-            <label class="form-label"><strong>Password</strong></label>
-            {{ form.password(class="form-control", placeholder="password") }}
-            {% for error in form.password.errors %}
-              <div class="text-danger small">{{ error }}</div>
-            {% endfor %}
-          </div>
-        
-          <div class="mb-3 pb-3 pt-3 text-center">
-            <button type="submit" class="btn btn-success w-50">Login</button>
-          </div>
-        </form>
-        
+      <form method="POST" action="{{ url_for('auth.login') }}" novalidate>
+        {{ form.hidden_tag() }}
 
-        <div class="text-center mt-3">
-        <p>New user? <a href="{{ url_for('auth.register') }}">Click here</a> to register.</p>
+        <div class="mb-3">
+          <label class="form-label"><strong>Email Address</strong></label>
+          {{ form.email(class="form-control", placeholder="email") }}
+          {% for error in form.email.errors %}
+          <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
         </div>
-        {% endif %}
-  </div>
+
+        <div class="mb-3">
+          <label class="form-label"><strong>Password</strong></label>
+          {{ form.password(class="form-control", placeholder="password") }}
+          {% for error in form.password.errors %}
+          <div class="text-danger small">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3 pb-3 pt-3 text-center">
+          <button type="submit" class="btn btn-success w-50">Login</button>
+        </div>
+      </form>
+
+      <div class="text-center mt-3">
+        <p>New user? <a href="{{ url_for('auth.register') }}">Click here</a> to register.</p>
+      </div>
+      {% endif %}
+    </div>
   </div>
 </div>
 

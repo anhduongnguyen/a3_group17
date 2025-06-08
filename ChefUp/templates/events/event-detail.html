@@ -1,3 +1,5 @@
+<!-- Event Detail Page -->
+
 {% extends "base.html" %}
 
 {% block content %}
@@ -15,8 +17,7 @@
 <div class="container my-4">
   <div class="row">
 
-
-    <!-- Ticket Box - Right side small card -->
+    <!-- Ticket Box (Get Tickets button disabled if event not open)-->
     <div class="col-lg-4 order-lg-2 order-1 mb-4">
       <div class="ticket-box">
         <p class="ticket-price"> {{ format_price(event.price) }}</p>
@@ -25,7 +26,7 @@
         <a class="btn btn-ticket disabled" aria-disabled="true" tabindex="-1" title="Event Cancelled">
           Event Cancelled
         </a>
-        {% elif event.update_event_status == "inactive" %}
+        {% elif event.update_event_status == "Inactive" %}
         <a class="btn btn-ticket disabled" aria-disabled="true" tabindex="-1" title="Event has ended">
           Event Ended
         </a>
@@ -39,8 +40,9 @@
         </a>
         {% endif %}
 
+        {# Only show Edit Event button to event owner and if event is not cancelled/inactive #}
         {% if current_user.is_authenticated and current_user.id == event.user_id and event.update_event_status not in
-        ["Cancelled", "inactive"] %}
+        ["Cancelled", "Inactive"] %}
         <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">
           Edit Event
         </a>
@@ -56,8 +58,8 @@
         <span class="badge bg-{{ event.update_event_status | badge_class }} rounded detail-badge me-2">
           {{ event.update_event_status }}
         </span>
-
-        <span class="bg-warning rounded detail-badge text-dark">{{ event.tickets_remaining() }} tickets left</span>
+        <span class="bg-warning rounded detail-badge text-dark">
+          {{ event.tickets_remaining() }} tickets left</span>
       </div>
       <div class="event-details">
         <p><strong>Date:</strong> {{ event.formatted_date }}</p>
@@ -67,15 +69,15 @@
       </div>
 
       <hr>
-
       <div class="event-description">
         <p>{{ event.description }}</p>
       </div>
-
       <hr>
 
+      <!-- Comment section -->
       <h4 class="mt-5 mb-4">Comments</h4>
 
+      {# Show comment form if user is logged in #}
       {% if current_user.is_authenticated %}
       <form method="POST">
         {{ form.hidden_tag() }}
@@ -90,6 +92,7 @@
       </div>
       {% endif %}
 
+      <!-- List of comments -->
       <div class="comment-container">
         {% for comment in event.comments %}
         <div class="comment-card">

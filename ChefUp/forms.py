@@ -17,13 +17,13 @@ CUISINE_CHOICES = [
     ('Other', 'Other')
 ]
 
-# creates the login information
+# Form used for user login
 class LoginForm(FlaskForm):
     email=StringField("Email Address", validators=[InputRequired('Email address is required'),])
     password=PasswordField("Password", validators=[InputRequired('Password is required')])
     submit = SubmitField("Login")
 
- # this is the registration form
+ # Form used for user registration
 class RegisterForm(FlaskForm):
     first_name = StringField("First Name", validators=[InputRequired("First name is required")])
     surname = StringField("Surname", validators=[InputRequired("Surname is required")])
@@ -50,7 +50,7 @@ class RegisterForm(FlaskForm):
 
     submit = SubmitField("Register")
 
-# this is the form for creating a event
+# Form used for creating a new event
 class CreateEventForm(FlaskForm):
     event_name = StringField("Event Name", validators=[
         InputRequired("Event name is required"), 
@@ -80,6 +80,7 @@ class CreateEventForm(FlaskForm):
         InputRequired("Please upload an image for your event")])    
     submit = SubmitField("Submit")
 
+# Form used for editing an existing event
 class EditEventForm(FlaskForm):
     event_name = StringField("Event Name", validators=[
         InputRequired("Event name is required"), 
@@ -107,10 +108,12 @@ class EditEventForm(FlaskForm):
         FileAllowed(ALLOWED_FILE, 'Only image files are allowed (jpg, png, jpeg)')])
     submit = SubmitField("Submit")
 
+# Form used for commenting on an event
 class CommentingForm(FlaskForm):
     content = TextAreaField("Comment", validators=[InputRequired(), Length(max=500)])
     submit = SubmitField("Post")
-    
+
+# Form used for booking tickets for an event
 class BookingForm(FlaskForm):
     num_tickets = IntegerField("Number of Tickets", default=1, validators=[
         InputRequired("Number of tickets is required"), 
