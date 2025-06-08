@@ -41,14 +41,12 @@
         <label for="options" class="col-form-label"><strong>Browse By Cuisine:</strong></label>
       </div>
       <div class="col-auto w-25">
-        <form method="GET" action="{{ url_for('main.index') }}" onchange="this.form.submit()" class="filter-form">
-          <select name="options" id="options" class="form-select">
-            <option value="" disabled selected>Select cuisine</option> <!-- Placeholder option -->
-            {% for option in options %}
-            <option value="{{ option }}" {% if option==selected_option %}selected{% endif %}>{{ option }}</option>
-            {% endfor %}
-          </select>
-        </form>
+        <select name="options" id="options" class="form-select">
+          <option value="" disabled selected>Select cuisine</option>
+          {% for option in options %}
+          <option value="{{ option }}" {% if option==selected_option %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
       </div>
     </form>
   </div>
@@ -74,7 +72,6 @@
           <div class="card h-100">
             <img src="{{ url_for('static', filename=event.image_filename) }}" class="event-photo-card card-img-top"
               alt="{{ event.title }}">
-
             <div class="card-body">
               <h5 class="card-title">{{ event.title }}</h5>
               {% if event.update_event_status %}
@@ -104,9 +101,11 @@
           </div>
         </a>
       </div>
+      {% else %}
+      <div class="col-12 text-center my-5">
+        <p>No open events found.</p>
+      </div>
       {% endfor %}
     </div>
   </div>
-
-
   {% endblock %}
