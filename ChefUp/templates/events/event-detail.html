@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Hero Banner -->
+<section class="container event-hero py-4 position-relative">
+  <div class="event-hero-background"
+    style="background-image: url('{{ url_for('static', filename=event.image_filename) }}');"></div>
+  <div class="container position-relative z-1 text-center">
+    <img src="{{ url_for('static', filename=event.image_filename) }}" class="img-fluid rounded event-hero-image"
+      alt="Event Cover" />
+  </div>
+</section>
+
+<div class="container my-4">
+  <div class="row">
+
+
+    <!-- Ticket Box - Right side small card -->
+    <div class="col-lg-4 order-lg-2 order-1 mb-4">
+      <div class="ticket-box">
+        <p class="ticket-price"> {{ format_price(event.price) }}</p>
+
+        {% if event.update_event_status == "Cancelled" %}
+        <a class="btn btn-ticket disabled" aria-disabled="true" tabindex="-1" title="Event Cancelled">
+          Event Cancelled
+        </a>
+        {% elif event.update_event_status == "inactive" %}
+        <a class="btn btn-ticket disabled" aria-disabled="true" tabindex="-1" title="Event has ended">
+          Event Ended
+        </a>
+        {% elif event.tickets_remaining() == 0 %}
+        <a class="btn btn-ticket disabled" aria-disabled="true" tabindex="-1" title="Sold out">
+          Sold Out
+        </a>
+        {% else %}
+        <a href="{{ url_for('events.book_event', event_id=event.id) }}" class="btn btn-ticket">
+          Get Tickets
+        </a>
+        {% endif %}
+
+        {% if current_user.is_authenticated and current_user.id == event.user_id and event.update_event_status not in
+        ["Cancelled", "inactive"] %}
+        <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-edit">
+          Edit Event
+        </a>
+        {% endif %}
+      </div>
+    </div>
+
+
+    <!-- Event Details -->
+    <div class="col-lg-8 order-lg-1 order-2">
+      <h1>{{ event.title }}</h1>
+      <div class="d-flex flex-wrap align-items-center mb-3">
+        <span class="badge bg-{{ event.update_event_status | badge_class }} rounded detail-badge me-2">
+          {{ event.update_event_status }}
+        </span>
+
+        <span class="bg-warning rounded detail-badge text-dark">{{ event.tickets_remaining() }} tickets left</span>
+      </div>
+      <div class="event-details">
+        <p><strong>Date:</strong> {{ event.formatted_date }}</p>
+        <p><strong>Time:</strong> {{ event.formatted_start }} - {{ event.formatted_end }}</p>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+        <p><strong>Cuisine:</strong> {{ event.cuisine }}</p>
+      </div>
+
+      <hr>
+
+      <div class="event-description">
+        <p>{{ event.description }}</p>
+      </div>
+
+      <hr>
+
+      <h4 class="mt-5 mb-4">Comments</h4>
+
+      {% if current_user.is_authenticated %}
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="comment-box mb-3">
+          {{ form.content(class="form-control comment-form", placeholder="Leave a comment...") }}
+          {{ form.submit(class="btn btn-success float-end mt-2") }}
+        </div>
+      </form>
+      {% else %}
+      <div class="alert alert-warning mb-3">
+        You must <a href="{{ url_for('auth.login') }}">log in</a> to post a comment.
+      </div>
+      {% endif %}
+
+      <div class="comment-container">
+        {% for comment in event.comments %}
+        <div class="comment-card">
+          <img src="{{ url_for('static', filename='img/profileuser.png') }}" alt="User Profile Icon"
+            class="profile-icon" />
+          <div>
+            <p class="mb-1">
+              <strong>{{ comment.user.first_name }} {{ comment.user.surname[0] }}</strong>
+              <span class="small text-muted">- {{ comment.timestamp.strftime('%d.%m.%Y, %I:%M %p') }}</span>
+            </p>
+            <p>{{ comment.content }}</p>
+          </div>
+        </div>
+        {% else %}
+        <p class="text-muted">No comments yet. Be the first to share your thoughts!</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

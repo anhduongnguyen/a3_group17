@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% set page_title = page_title if page_title is defined else 'Create New Class' %}
+
+{% if current_user.is_authenticated %}
+<main class="container booking-page my-2">
+
+  <!-- Event Header -->
+  <div class="container booking-head">
+    <section class="row mb-4 gx-0 event-booking-header">
+      <div class="col-lg-7 pe-lg-4">
+        <h3>Book Your Spot For:</h3>
+        <h2>{{ event.title }}</h2>
+        <p>{{ event.formatted_date }}, {{ event.formatted_start }} - {{ event.formatted_end }}</p>
+        <span class="bg-warning rounded detail-badge text-dark">{{ event.tickets_remaining() }} tickets left</span>
+      </div>
+      <div class="col-lg-5 text-center mt-3 mt-lg-0">
+        <img src="{{ url_for('static', filename=event.image_filename) }}" class="img-fluid event-booking-img"
+          alt="Event Image">
+      </div>
+    </section>
+  </div>
+
+  <!-- Booking Form -->
+  <div class="d-flex justify-content-center">
+    <div class="bg-light shadow-sm py-4 px-0 booking-form">
+      <div class="container form-box">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="form-group text-center">
+            {{ form.num_tickets.label(class="form-label") }}
+            {{ form.num_tickets(class="form-control ticket-input") }}
+          </div>
+          <div class="text-center">
+            {% if event.update_event_status == "Cancelled" %}
+            <button class="btn btn-success submit-button" disabled>Event Cancelled</button>
+            {% elif event.tickets_remaining() == 0 %}
+            <button class="btn btn-success submit-button" disabled>Tickets Sold Out</button>
+            {% elif event.update_event_status == "inactive" %}
+            <button class="btn btn-success submit-button" disabled>Event Ended</button>
+            {% else %}
+            {{ form.submit(class="btn btn-success submit-button") }}
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+
+{% else %}
+<div class="alert alert-warning text-center">
+  You must <a href="{{ url_for('auth.login') }}">log in</a> to book an event.
+</div>
+{% endif %}
+
+{% endblock %}

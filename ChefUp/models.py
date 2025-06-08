@@ -57,7 +57,7 @@ class Event(db.Model):
         now = datetime.now()
 
         if now > event_end:
-            return "Past"
+            return "Inactive"
         elif self.tickets_remaining() == 0:
             return "Sold Out"
         else:
