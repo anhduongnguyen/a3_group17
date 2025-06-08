@@ -16,6 +16,7 @@ def create_app():
     app.jinja_env.filters['badge_class'] = status_badge_class
 
 
+
     db.init_app(app)
     Bcrypt(app)
     Bootstrap5(app)
@@ -27,17 +28,16 @@ def create_app():
     login_manager.login_message = 'You need to be logged in to access this page.'
     login_manager.login_message_category = 'warning'
 
-    from .models import User  # avoid duplicate
+    from .models import User  
     @login_manager.user_loader
     def load_user(user_id):
-        return db.session.get(User, int(user_id))  # preferred over scalar+where
+        return db.session.get(User, int(user_id))  
+    
+    from . import views, events, auth 
 
     # Register blueprints
-    from . import views
     app.register_blueprint(views.main_bp)
-    app.register_blueprint(views.event_bp)
-
-    from . import auth
+    app.register_blueprint(events.event_bp)
     app.register_blueprint(auth.auth_bp)
 
     # Context processors
