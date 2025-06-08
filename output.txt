@@ -1,0 +1,42 @@
+3bap (9):
+      added form function
+      Merge branch 'main' of https://github.com/anhduongnguyen/a3_group17 into oliver
+      fix stuff
+      bug fix
+      fixed
+      impleted cancel
+      fixed error
+      added comment
+      added edit
+
+Anh (17):
+      Setting Up project
+      Implementing db structure and added error template file
+      Editing Book Event page to remove irrelevant input fields (name, mobile no, email)
+      Removed input field name, mobile no and email in Book Event page
+      Implemented the image uploading func for create event form
+      Render Image uploaded for event create & changed date time formatting
+      Cleaning up pictures & adding uploaded img folder path to gitignore
+      Worked on UI of register and login page, fixed bug that didn't show cuisine type on event card (index page)
+      Did the backend functionality for register, login, logout. Need to make the navbar change accordingly
+      finished with authentication func & session creation, nav bar dynamically changes based on if user is logged in or not
+      implemented search bar and filter functionality on homepage
+      working out logic for updating event stat
+      Fixing up edit event image functionality, working on book event
+      Backend func for booking event work, need to work on the event states
+      Got event status updating (need to implement restrictions for each stat)
+      Finished Implementing the updating of event status
+      Added error handling to editing event & button disabling based on status
+
+SirJarrah (10):
+      made event details now increment with ID for page and now pulls info from database of the created event instead of template data.
+      finished implimentation of logic and corrected UI elements
+      Code polishing and more ui issues fixed
+      Refactoring, separate event-related routes into events.py blueprint
+      Moving event html templates into events folder
+      Large overhaul
+      Updated booking event front end
+      Implemented booking history page
+      Edited index (homepage) to only show open events
+      Added comments and fixed formatting
+
